@@ -20,7 +20,7 @@ import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import PopupWrapper from './PopupWrapper';
 import PopupFooter from './PopupFooter';
 
-import { PopupContentsProps, Option } from 'constants/props';
+import { PopupContentsProps, Option } from './constants/props';
 import {
   SEARCH_AREA_HEIGHT,
   LISTBOX_MIN_HEIGHT,

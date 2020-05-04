@@ -5,7 +5,7 @@ import { makeStyles, createStyles, TextField } from '@material-ui/core';
 import PopupContents from './PopupContents';
 import PopupWrapper from './PopupWrapper';
 
-import { MultiSelectProps, Option } from 'constants/props';
+import { MultiSelectProps, Option } from './constants/props';
 import {
   SEARCH_AREA_HEIGHT,
   LISTBOX_MIN_HEIGHT,
