@@ -48,6 +48,16 @@ const useStyles = makeStyles(theme =>
       width: `calc(100% - ${theme.spacing(2 * 2)}px)`,
     },
     searchInput: { borderRadius: theme.shape.borderRadius },
+    searchLabel: {
+      paddingRight: theme.spacing(7),
+      width: '100%',
+      boxSizing: 'border-box',
+
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+    },
+    searchLabelShrink: { paddingRight: 0 },
 
     listbox: {
       boxSizing: 'border-box',
@@ -227,6 +237,13 @@ export default function PopupContents<T>({
                 </InputAdornment>
               ),
               ...SearchBoxProps?.InputProps,
+            }}
+            InputLabelProps={{
+              classes: {
+                root: classes.searchLabel,
+                shrink: classes.searchLabelShrink,
+              },
+              ...SearchBoxProps?.InputLabelProps,
             }}
           />
         )}

@@ -18,7 +18,7 @@ const App = () => {
         options={top100Films}
         value={value}
         onChange={setValue}
-        label="Movie"
+        label="Movie MovieMovieMovieMovieMovieMovieMovieMovieMovie"
         labelPlural="Movies"
         selectAll={false}
         freeText
