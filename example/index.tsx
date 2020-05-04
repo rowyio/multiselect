@@ -21,10 +21,11 @@ const App = () => {
           value={value}
           onChange={setValue}
           label="Movie"
-          labelPlural="movies"
+          labelPlural="Movies"
           selectAll={false}
           freeText
           // searchable={false}
+          clearable
         />
 
         <Grid container spacing={2} style={{ marginTop: 20, marginBottom: 50 }}>
@@ -40,10 +41,10 @@ const App = () => {
           value={singleValue}
           onChange={setSingleValue}
           label="Movie"
-          labelPlural="movies"
+          labelPlural="Movies"
           selectAll={false}
           freeText
-          // searchable={false}
+          searchable={false}
           multiple={false}
           // clearable
         />

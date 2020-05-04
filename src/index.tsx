@@ -15,8 +15,8 @@ import PopupContents, {
   Option,
   SEARCH_AREA_HEIGHT,
   LISTBOX_MIN_HEIGHT,
-  FOOTER_HEIGHT,
 } from './PopupContents';
+import { FOOTER_HEIGHT } from './PopupFooter';
 import PopupWrapper from './PopupWrapper';
 
 const useStyles = makeStyles(() =>

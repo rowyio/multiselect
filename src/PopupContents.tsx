@@ -6,9 +6,6 @@ import {
   createStyles,
   TextField,
   InputAdornment,
-  Grid,
-  Typography,
-  Button,
 } from '@material-ui/core';
 import Autocomplete, {
   AutocompleteProps,
@@ -24,13 +21,12 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
-// import AddIcon from '@material-ui/icons/Add'
 
 import PopupWrapper from './PopupWrapper';
+import PopupFooter, { FOOTER_HEIGHT } from './PopupFooter';
 
 export const SEARCH_AREA_HEIGHT = 16 + 48 + 8;
 export const LISTBOX_MIN_HEIGHT = 100;
-export const FOOTER_HEIGHT = 48;
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -38,6 +34,7 @@ const useStyles = makeStyles(theme =>
       '&$hideSearch': { marginTop: -SEARCH_AREA_HEIGHT },
     },
     hideSearch: {},
+    noFooter: {},
 
     paper: { margin: 0 },
     popper: { minWidth: '100%' },
@@ -55,6 +52,10 @@ const useStyles = makeStyles(theme =>
       maxHeight: `calc(100vh - 96px - ${SEARCH_AREA_HEIGHT}px - ${FOOTER_HEIGHT}px)`,
 
       '&$hideSearch': { minHeight: LISTBOX_MIN_HEIGHT + SEARCH_AREA_HEIGHT },
+      '&$noFooter': { minHeight: LISTBOX_MIN_HEIGHT + FOOTER_HEIGHT },
+      '&$hideSearch$noFooter': {
+        minHeight: LISTBOX_MIN_HEIGHT + SEARCH_AREA_HEIGHT + FOOTER_HEIGHT,
+      },
     },
     noOptions: {
       ...theme.typography.button,
@@ -95,18 +96,6 @@ const useStyles = makeStyles(theme =>
       },
     },
     optionIcon: { margin: theme.spacing(0, 2, 0, -(3 / 8)) },
-
-    footer: {
-      width: '100%',
-      margin: theme.spacing(-2 / 8, 0),
-    },
-    count: {
-      marginLeft: theme.spacing(1),
-      fontFeatureSettings: '"tnum"',
-      color: theme.palette.text.disabled,
-      userSelect: 'none',
-    },
-    footerButton: { display: 'flex' },
   })
 );
 
@@ -135,8 +124,10 @@ interface IPopupContentsCustomProps {
   // multiple?: boolean;
   /** Optionally prevent the user from searching options. Default: true */
   searchable?: boolean;
-  /** Optionally prevent the user to select all options. Default: true */
+  /** Optionally prevent the user to select all options if `multiple`. Default: true */
   selectAll?: boolean;
+  /** Optionally allow the user to select all options. Default: true if `selectAll` */
+  clearable?: boolean;
   /** Optionally allow the user to add any custom value. Option value **must** be `string`. Default: false */
   freeText?: boolean;
 }
@@ -188,7 +179,8 @@ export default function PopupContents<T>({
   multiple,
   searchable = true,
   selectAll = true,
-  freeText,
+  clearable = false,
+  freeText = false,
   ...props
 }: IPopupContentsProps<T>) {
   const { options, value } = props;
@@ -196,7 +188,9 @@ export default function PopupContents<T>({
 
   let searchBoxLabel = '';
   if (searchable) {
-    searchBoxLabel = `Search ${labelPlural ?? label}`;
+    if (freeText)
+      searchBoxLabel = `Search ${labelPlural ?? label} or Add a New ${label}`;
+    else searchBoxLabel = `Search ${labelPlural ?? label}`;
   } else {
     if (multiple) searchBoxLabel = `Select ${labelPlural ?? label}`;
     else searchBoxLabel = `Select a ${label}`;
@@ -223,7 +217,11 @@ export default function PopupContents<T>({
           paper: classes.paper,
           popper: classes.popper,
           popperDisablePortal: classes.popperDisablePortal,
-          listbox: clsx(classes.listbox, !searchable && classes.hideSearch),
+          listbox: clsx(
+            classes.listbox,
+            !searchable && classes.hideSearch,
+            !multiple && !clearable && classes.noFooter
+          ),
           option: classes.option,
           noOptions: classes.noOptions,
         }}
@@ -318,42 +316,16 @@ export default function PopupContents<T>({
         }
       />
 
-      {multiple && (
-        <Grid
-          container
-          spacing={2}
-          className={classes.footer}
-          justify="space-between"
-          alignItems="baseline"
-        >
-          {
-            <Grid item>
-              <Typography variant="button" className={classes.count}>
-                {value.length} of {options.length}
-              </Typography>
-            </Grid>
-          }
-          {selectAll && (
-            <Grid item xs>
-              {value.length > 0 ? (
-                <Button onClick={onClear} className={classes.footerButton}>
-                  Clear
-                </Button>
-              ) : (
-                <Button onClick={onSelectAll} className={classes.footerButton}>
-                  Select All
-                </Button>
-              )}
-            </Grid>
-          )}
-
-          <Grid item>
-            <Button onClick={onClose} className={classes.footerButton}>
-              Done
-            </Button>
-          </Grid>
-        </Grid>
-      )}
+      <PopupFooter
+        multiple={multiple}
+        selectAll={selectAll}
+        clearable={clearable}
+        onSelectAll={onSelectAll}
+        onClear={onClear}
+        onClose={onClose}
+        value={value}
+        options={options}
+      />
     </>
   );
 }
