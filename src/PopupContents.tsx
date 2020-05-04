@@ -14,7 +14,10 @@ import Autocomplete, {
   AutocompleteProps,
   createFilterOptions,
 } from '@material-ui/lab/Autocomplete';
-import { UseAutocompleteMultipleProps } from '@material-ui/lab/useAutocomplete';
+import {
+  UseAutocompleteSingleProps,
+  UseAutocompleteMultipleProps,
+} from '@material-ui/lab/useAutocomplete';
 
 import SearchIcon from '@material-ui/icons/Search';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
@@ -115,14 +118,7 @@ export type Option<T> = {
 
 const filter = createFilterOptions<Option<any>>();
 
-export interface IPopupContentsProps<T>
-  extends Partial<
-    AutocompleteProps<Option<T>> & UseAutocompleteMultipleProps<Option<T>>
-  > {
-  /** Received from root component. Must define type here as never undefined */
-  options: Option<T>[];
-  /** Received from root component. Must define type here as never undefined */
-  value: Option<T>[];
+interface IPopupContentsCustomProps {
   /** Received from root component */
   onClose: () => void;
   /** Received from root component */
@@ -145,6 +141,42 @@ export interface IPopupContentsProps<T>
   freeText?: boolean;
 }
 
+type PopupContentsMultipleProps<T> = {
+  multiple: true;
+  /** Must define type here as never undefined */
+  options: Option<T>[];
+  /** Must define type here as never undefined */
+  value: Option<T> | null;
+} & IPopupContentsCustomProps &
+  Partial<AutocompleteProps<Option<T>>> &
+  Partial<UseAutocompleteMultipleProps<Option<T>>>;
+
+type PopupContentsSingleProps<T> = {
+  multiple: false;
+  // Must define type here as never undefined
+  options: Option<T>[];
+  // Must define type here as never undefined
+  value: Option<T>[];
+} & IPopupContentsCustomProps &
+  Partial<AutocompleteProps<Option<T>>> &
+  Partial<UseAutocompleteSingleProps<Option<T>>>;
+
+// Explicitly separate type intersections based off `multiple` prop
+export type IPopupContentsProps<T> =
+  | PopupContentsMultipleProps<T>
+  | PopupContentsSingleProps<T>;
+
+// export interface IPopupContentsProps<T>
+//   extends Partial<
+//     AutocompleteProps<Option<T>> & UseAutocompleteMultipleProps<Option<T>>
+//   > {
+//   /** Received from root component. Must define type here as never undefined */
+//   options: Option<T>[];
+//   /** Received from root component. Must define type here as never undefined */
+//   value: Option<T>[];
+
+// }
+
 export default function PopupContents<T>({
   onClose,
   onSelectAll,
@@ -153,7 +185,7 @@ export default function PopupContents<T>({
   labelPlural,
   label,
 
-  multiple = true,
+  multiple,
   searchable = true,
   selectAll = true,
   freeText,
@@ -266,7 +298,12 @@ export default function PopupContents<T>({
                   const filtered = filter(options, params) as Option<any>[];
 
                   // Suggest the creation of a new value
-                  if (params.inputValue !== '')
+                  if (
+                    params.inputValue !== '' &&
+                    filtered.findIndex(
+                      option => option.value === params.inputValue
+                    ) <= -1
+                  )
                     filtered.push({
                       value: params.inputValue,
                       label: `Add “${params.inputValue}”`,
@@ -275,44 +312,48 @@ export default function PopupContents<T>({
                   return filtered;
                 }
               : // If searchable but not freeText, use normal filter method
-                undefined
+                ((undefined as unknown) as () => Option<T>[])
             : // If not searchable, always show all options
               () => options
         }
       />
 
-      <Grid
-        container
-        spacing={2}
-        className={classes.footer}
-        justify="space-between"
-        alignItems="baseline"
-      >
-        <Grid item>
-          <Typography variant="button" className={classes.count}>
-            {value.length} of {options.length}
-          </Typography>
-        </Grid>
-        {selectAll && (
-          <Grid item xs>
-            {value.length > 0 ? (
-              <Button onClick={onClear} className={classes.footerButton}>
-                Clear
-              </Button>
-            ) : (
-              <Button onClick={onSelectAll} className={classes.footerButton}>
-                Select All
-              </Button>
-            )}
-          </Grid>
-        )}
+      {multiple && (
+        <Grid
+          container
+          spacing={2}
+          className={classes.footer}
+          justify="space-between"
+          alignItems="baseline"
+        >
+          {
+            <Grid item>
+              <Typography variant="button" className={classes.count}>
+                {value.length} of {options.length}
+              </Typography>
+            </Grid>
+          }
+          {selectAll && (
+            <Grid item xs>
+              {value.length > 0 ? (
+                <Button onClick={onClear} className={classes.footerButton}>
+                  Clear
+                </Button>
+              ) : (
+                <Button onClick={onSelectAll} className={classes.footerButton}>
+                  Select All
+                </Button>
+              )}
+            </Grid>
+          )}
 
-        <Grid item>
-          <Button onClick={onClose} className={classes.footerButton}>
-            Done
-          </Button>
+          <Grid item>
+            <Button onClick={onClose} className={classes.footerButton}>
+              Done
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
     </>
   );
 }

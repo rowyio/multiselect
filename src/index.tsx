@@ -27,13 +27,11 @@ const useStyles = makeStyles(() =>
   })
 );
 
-export interface IMultiSelectProps<T>
+interface IMultiSelectCommonProps<T>
   extends Partial<
     Omit<IPopupContentsProps<T>, 'options' | 'value' | 'onChange'>
   > {
   options: (Option<T> | string)[];
-  value: T[];
-  onChange: (value: T[]) => void;
   // itemRenderer?: (option: OptionType, isSelected: boolean) => React.ReactNode;
   // /** Optional style overrides for root MUI `TextField` component */
   // className?: string;
@@ -45,12 +43,24 @@ export interface IMultiSelectProps<T>
   backdrop?: boolean;
 }
 
+export type IMultiSelectProps<T> =
+  | ({
+      multiple?: true;
+      value: T[];
+      onChange: (value: T[]) => void;
+    } & IMultiSelectCommonProps<T>)
+  | ({
+      multiple: false;
+      value: T;
+      onChange: (value: T | null) => void;
+    } & IMultiSelectCommonProps<T>);
+
 export default function MultiSelect<T = string>({
   options: optionsProp,
   value: valueProp,
   onChange,
 
-  label,
+  multiple = true,
 
   backdrop = false,
   ...props
@@ -61,7 +71,7 @@ export default function MultiSelect<T = string>({
 // backdrop = true,
 // ...props
 IMultiSelectProps<T>) {
-  const { freeText, multiple } = props;
+  const { freeText, label } = props;
   const classes = useStyles();
 
   // const {
@@ -100,52 +110,115 @@ IMultiSelectProps<T>) {
   );
 
   // Transform `value` to `Option` type
-  const value = valueProp
-    .map(
-      item =>
-        (typeof optionsProp[0] === 'string'
+  let value: Option<T>[] | Option<T> | null;
+  if (multiple) {
+    value = (valueProp as T[])
+      .map(item =>
+        typeof optionsProp[0] === 'string'
           ? { label: item, value: item }
-          : options.find(option => option.value === item)) as
-          | Option<T>
-          | undefined
-    )
-    .filter(item => item !== undefined) as Option<T>[];
+          : options.find(option => option.value === item)
+      )
+      .filter(item => item !== undefined) as Option<T>[];
+  } else {
+    if (!valueProp || ((valueProp as unknown) as string) === '') {
+      value = null;
+    } else {
+      if (typeof valueProp === 'string')
+        value = { label: valueProp as string, value: valueProp as T };
+      else value = options.find(option => option.value === valueProp) ?? null;
+    }
+  }
 
   // If `freeText` enabled, show the user’s custom values
   // at the start of the list
   if (freeText) {
-    for (let i = value.length - 1; i >= 0; i--) {
-      const item = value[i];
-      if (options.findIndex(option => option.value === item.value) <= -1)
-        options.unshift(item);
+    if (multiple) {
+      const valueArray = value as Option<T>[];
+      for (let i = valueArray.length - 1; i >= 0; i--) {
+        const item = valueArray[i];
+        if (options.findIndex(option => option.value === item.value) <= -1)
+          options.unshift(item);
+      }
+    } else if (value !== null && !!(value as Option<T>).value) {
+      if (
+        options.findIndex(
+          option => option.value === (value as Option<T>).value
+        ) <= -1
+      )
+        options.unshift(value as Option<T>);
     }
   }
 
-  const handleChange: IPopupContentsProps<T>['onChange'] = (_, newValue) => {
+  const handleChange: IPopupContentsProps<T>['onChange'] = (
+    _: any,
+    newValue: any
+  ) => {
     if (multiple) {
-      onChange(newValue.map(item => item.value));
+      onChange(newValue.map((item: any) => item.value));
     } else {
-      // onChange(newValue.value);
+      onChange(newValue.value);
       handleClose();
     }
   };
 
-  const handleSelectAll = () => onChange(options.map(item => item.value));
-  const handleClear = () => onChange([]);
+  const handleSelectAll = () =>
+    onChange(options.map(item => item.value) as any);
+  const handleClear = () => onChange((multiple ? [] : null) as any);
+
+  const popupContentsProps = multiple
+    ? {
+        ...props,
+        multiple: true as true,
+        options,
+        value: value as Option<T>[],
+        onChange: handleChange,
+        onClose: handleClose,
+        onSelectAll: handleSelectAll,
+        onClear: handleClear,
+      }
+    : {
+        ...props,
+        multiple: false as false,
+        options,
+        value: value as Option<T> | null,
+        onChange: handleChange,
+        onClose: handleClose,
+        onSelectAll: handleSelectAll,
+        onClear: handleClear,
+      };
 
   return (
     <TextField
       label={label}
-      value=""
+      // Must pass value here to display selected values correctly and shrink label
+      // value=""
+      // value={
+      //   (Array.isArray(valueProp) && valueProp.length > 0) || !!valueProp
+      //     ? ['']
+      //     : []
+      // }
       select
       // value={sanitisedValue}
       // className={clsx(classes.root, className)}
       // {...(TextFieldProps as any)}
       fullWidth
+      InputLabelProps={{
+        shrink: Array.isArray(valueProp) ? valueProp.length > 0 : !!valueProp,
+      }}
       SelectProps={{
         open,
         onOpen: handleOpen,
         onClose: handleClose,
+        renderValue: _ => {
+          if (Array.isArray(value)) {
+            if (value.length === 1) return value[0].label;
+            if (value.length > 1)
+              return `${value.length} of ${options.length} selected`;
+            return '';
+          } else {
+            return value?.label ?? '';
+          }
+        },
         // renderValue: value => {
         //   const selected = value as string[];
         //   if (selected.length === 1 && typeof selected[0] === 'string') {
@@ -154,7 +227,7 @@ IMultiSelectProps<T>) {
         //   }
         //   return `${selected.length} of ${options.length} selected`;
         // },
-        // displayEmpty,
+        displayEmpty: true,
         // classes: { root: classes.selectRoot },
         // ...TextFieldProps.SelectProps,
         // Must have this set to prevent MUI transforming `value`
@@ -190,17 +263,7 @@ IMultiSelectProps<T>) {
       // }}
     >
       <PopupWrapper>
-        <PopupContents
-          // dropdownWidth={dropdownWidth}
-          {...props}
-          options={options}
-          value={value}
-          onChange={handleChange}
-          onClose={handleClose}
-          onSelectAll={handleSelectAll}
-          onClear={handleClear}
-          label={label}
-        />
+        <PopupContents {...(popupContentsProps as any)} />
       </PopupWrapper>
     </TextField>
   );

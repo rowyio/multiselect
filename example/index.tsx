@@ -9,6 +9,9 @@ import MultiSelect from '../.';
 
 const App = () => {
   const [value, setValue] = React.useState<string[]>(['The Godfather']);
+  const [singleValue, setSingleValue] = React.useState<string>('');
+  console.log(value);
+  console.log(singleValue);
 
   return (
     <MuiThemeProvider theme={defaultTheme}>
@@ -22,16 +25,28 @@ const App = () => {
           selectAll={false}
           freeText
           // searchable={false}
-          // multiple={false}
         />
 
-        <Grid container spacing={2} style={{ marginTop: 20 }}>
+        <Grid container spacing={2} style={{ marginTop: 20, marginBottom: 50 }}>
           {value.map(x => (
             <Grid item key={x}>
               <Chip label={x} />
             </Grid>
           ))}
         </Grid>
+
+        <MultiSelect
+          options={top100Films}
+          value={singleValue}
+          onChange={setSingleValue}
+          label="Movie"
+          labelPlural="movies"
+          selectAll={false}
+          freeText
+          // searchable={false}
+          multiple={false}
+          // clearable
+        />
       </Container>
     </MuiThemeProvider>
   );
