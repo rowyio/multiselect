@@ -3,8 +3,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import './style.css';
-import { defaultTheme } from '@antlerengineering/components';
-import { MuiThemeProvider, Container, Grid, Chip } from '@material-ui/core';
+import { Container, Grid, Chip } from '@material-ui/core';
 import MultiSelect from '../.';
 
 const App = () => {
@@ -14,42 +13,40 @@ const App = () => {
   console.log(singleValue);
 
   return (
-    <MuiThemeProvider theme={defaultTheme}>
-      <Container>
-        <MultiSelect
-          options={top100Films}
-          value={value}
-          onChange={setValue}
-          label="Movie"
-          labelPlural="Movies"
-          selectAll={false}
-          freeText
-          // searchable={false}
-          clearable
-          // renderOption={option => option.label}
-        />
+    <Container>
+      <MultiSelect
+        options={top100Films}
+        value={value}
+        onChange={setValue}
+        label="Movie"
+        labelPlural="Movies"
+        selectAll={false}
+        freeText
+        // searchable={false}
+        clearable
+        // renderOption={option => option.label}
+      />
 
-        <Grid container spacing={2} style={{ marginTop: 20, marginBottom: 50 }}>
-          {value.map(x => (
-            <Grid item key={x}>
-              <Chip label={x} />
-            </Grid>
-          ))}
-        </Grid>
+      <Grid container spacing={2} style={{ marginTop: 20, marginBottom: 50 }}>
+        {value.map(x => (
+          <Grid item key={x}>
+            <Chip label={x} />
+          </Grid>
+        ))}
+      </Grid>
 
-        <MultiSelect
-          options={top100Films}
-          value={singleValue}
-          onChange={setSingleValue}
-          label="Movie"
-          labelPlural="Movies"
-          selectAll={false}
-          freeText
-          multiple={false}
-          // clearable
-        />
-      </Container>
-    </MuiThemeProvider>
+      <MultiSelect
+        options={top100Films}
+        value={singleValue}
+        onChange={setSingleValue}
+        label="Movie"
+        labelPlural="Movies"
+        selectAll={false}
+        freeText
+        multiple={false}
+        // clearable
+      />
+    </Container>
   );
 };
 
