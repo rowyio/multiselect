@@ -37,8 +37,8 @@ interface IMultiSelectCommonProps<T>
   // className?: string;
   // /** Override any props of the root MUI `TextField` component */
   // TextFieldProps?: Partial<TextFieldProps>;
-  // /** Display 0 of X selected when empty */
-  // displayEmpty?: boolean;
+  /** Display 0 of X selected when empty */
+  displayEmpty?: boolean;
   /** Show the backdrop when dropdown open */
   backdrop?: boolean;
 }
@@ -62,6 +62,7 @@ export default function MultiSelect<T = string>({
 
   multiple = true,
 
+  displayEmpty = false,
   backdrop = false,
   ...props
 }: // label,
@@ -203,7 +204,9 @@ IMultiSelectProps<T>) {
       // {...(TextFieldProps as any)}
       fullWidth
       InputLabelProps={{
-        shrink: Array.isArray(valueProp) ? valueProp.length > 0 : !!valueProp,
+        shrink:
+          displayEmpty ||
+          (Array.isArray(valueProp) ? valueProp.length > 0 : !!valueProp),
       }}
       SelectProps={{
         open,
@@ -214,9 +217,12 @@ IMultiSelectProps<T>) {
             if (value.length === 1) return value[0].label;
             if (value.length > 1)
               return `${value.length} of ${options.length} selected`;
+            if (displayEmpty) return `0 of ${options.length} selected`;
             return '';
           } else {
-            return value?.label ?? '';
+            if (value !== null) return value.label;
+            if (displayEmpty) return `0 of ${options.length} selected`;
+            return '';
           }
         },
         // renderValue: value => {

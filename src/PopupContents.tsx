@@ -27,6 +27,7 @@ import PopupFooter, { FOOTER_HEIGHT } from './PopupFooter';
 
 export const SEARCH_AREA_HEIGHT = 16 + 48 + 8;
 export const LISTBOX_MIN_HEIGHT = 100;
+export const LISTBOX_MIN_WIDTH = 260;
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -37,7 +38,10 @@ const useStyles = makeStyles(theme =>
     noFooter: {},
 
     paper: { margin: 0 },
-    popper: { minWidth: '100%' },
+    popper: {
+      minWidth: LISTBOX_MIN_WIDTH,
+      width: '100% !important',
+    },
     popperDisablePortal: { position: 'relative' },
 
     search: {

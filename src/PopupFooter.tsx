@@ -16,11 +16,14 @@ const useStyles = makeStyles(theme =>
       width: '100%',
       height: FOOTER_HEIGHT,
       margin: 0,
+
       '& > div': { padding: theme.spacing(0, 1) + ' !important' },
     },
 
     count: {
+      display: 'block',
       marginLeft: theme.spacing(1),
+
       fontFeatureSettings: '"tnum"',
       color: theme.palette.text.disabled,
       userSelect: 'none',
