@@ -81,7 +81,7 @@ export default function PopupFooter({
             )}
           </Grid>
         ) : (
-          clearable && (
+          clearable !== false && (
             <Grid item xs>
               {clearButton}
             </Grid>
