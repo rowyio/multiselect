@@ -43,6 +43,7 @@ const App = () => {
         labelPlural="Movies"
         selectAll={false}
         freeText
+        searchable={false}
         multiple={false}
         // clearable
       />

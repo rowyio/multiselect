@@ -44,13 +44,13 @@ const useStyles = makeStyles(theme =>
     popperDisablePortal: { position: 'relative' },
 
     search: {
-      margin: theme.spacing(2, 2, 1),
+      margin: theme.spacing(2, 2, 0),
       width: `calc(100% - ${theme.spacing(2 * 2)}px)`,
     },
     searchInput: { borderRadius: theme.shape.borderRadius },
 
     listbox: {
-      padding: 0,
+      boxSizing: 'border-box',
       minHeight: LISTBOX_MIN_HEIGHT,
       maxHeight: `calc(100vh - 96px - ${SEARCH_AREA_HEIGHT}px - ${FOOTER_HEIGHT}px)`,
 
