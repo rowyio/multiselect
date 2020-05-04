@@ -8,7 +8,8 @@ import {
   Button,
 } from '@material-ui/core';
 
-export const FOOTER_HEIGHT = 48;
+import { PopupFooterProps } from './constants/props';
+import { FOOTER_HEIGHT } from './constants/layout';
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -33,17 +34,6 @@ const useStyles = makeStyles(theme =>
   })
 );
 
-export interface IPopupFooterProps {
-  multiple: boolean;
-  selectAll: boolean;
-  clearable: boolean;
-  onSelectAll: () => void;
-  onClear: () => void;
-  onClose: () => void;
-  value: any;
-  options: any[];
-}
-
 export default function PopupFooter({
   multiple,
   selectAll,
@@ -53,7 +43,7 @@ export default function PopupFooter({
   onClose,
   value,
   options,
-}: IPopupFooterProps) {
+}: PopupFooterProps) {
   const classes = useStyles();
 
   const clearButton = (

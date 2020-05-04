@@ -8,13 +8,8 @@ import {
   InputAdornment,
 } from '@material-ui/core';
 import Autocomplete, {
-  AutocompleteProps,
   createFilterOptions,
 } from '@material-ui/lab/Autocomplete';
-import {
-  UseAutocompleteSingleProps,
-  UseAutocompleteMultipleProps,
-} from '@material-ui/lab/useAutocomplete';
 
 import SearchIcon from '@material-ui/icons/Search';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
@@ -23,11 +18,15 @@ import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 
 import PopupWrapper from './PopupWrapper';
-import PopupFooter, { FOOTER_HEIGHT } from './PopupFooter';
+import PopupFooter from './PopupFooter';
 
-export const SEARCH_AREA_HEIGHT = 16 + 48 + 8;
-export const LISTBOX_MIN_HEIGHT = 100;
-export const LISTBOX_MIN_WIDTH = 260;
+import { PopupContentsProps, Option } from 'constants/props';
+import {
+  SEARCH_AREA_HEIGHT,
+  LISTBOX_MIN_HEIGHT,
+  LISTBOX_MIN_WIDTH,
+  FOOTER_HEIGHT,
+} from './constants/layout';
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -103,74 +102,7 @@ const useStyles = makeStyles(theme =>
   })
 );
 
-export type Option<T> = {
-  value: T;
-  label: string;
-  disabled?: boolean;
-};
-
 const filter = createFilterOptions<Option<any>>();
-
-interface IPopupContentsCustomProps {
-  /** Received from root component */
-  onClose: () => void;
-  /** Received from root component */
-  onSelectAll: () => void;
-  /** Received from root component */
-  onClear: () => void;
-
-  /** Used as label for search box and no options text */
-  labelPlural?: string;
-  /** Backup label for search box if `labelPlural` undefined. Used for add item text */
-  label?: string;
-
-  /** Optionally prevent the user selecting multiple options. Default: true */
-  // multiple?: boolean;
-  /** Optionally prevent the user from searching options. Default: true */
-  searchable?: boolean;
-  /** Optionally prevent the user to select all options if `multiple`. Default: true */
-  selectAll?: boolean;
-  /** Optionally allow the user to select all options. Default: true if `selectAll` */
-  clearable?: boolean;
-  /** Optionally allow the user to add any custom value. Option value **must** be `string`. Default: false */
-  freeText?: boolean;
-}
-
-type PopupContentsMultipleProps<T> = {
-  multiple: true;
-  /** Must define type here as never undefined */
-  options: Option<T>[];
-  /** Must define type here as never undefined */
-  value: Option<T> | null;
-} & IPopupContentsCustomProps &
-  Partial<AutocompleteProps<Option<T>>> &
-  Partial<UseAutocompleteMultipleProps<Option<T>>>;
-
-type PopupContentsSingleProps<T> = {
-  multiple: false;
-  // Must define type here as never undefined
-  options: Option<T>[];
-  // Must define type here as never undefined
-  value: Option<T>[];
-} & IPopupContentsCustomProps &
-  Partial<AutocompleteProps<Option<T>>> &
-  Partial<UseAutocompleteSingleProps<Option<T>>>;
-
-// Explicitly separate type intersections based off `multiple` prop
-export type IPopupContentsProps<T> =
-  | PopupContentsMultipleProps<T>
-  | PopupContentsSingleProps<T>;
-
-// export interface IPopupContentsProps<T>
-//   extends Partial<
-//     AutocompleteProps<Option<T>> & UseAutocompleteMultipleProps<Option<T>>
-//   > {
-//   /** Received from root component. Must define type here as never undefined */
-//   options: Option<T>[];
-//   /** Received from root component. Must define type here as never undefined */
-//   value: Option<T>[];
-
-// }
 
 export default function PopupContents<T>({
   onClose,
@@ -185,8 +117,11 @@ export default function PopupContents<T>({
   selectAll = true,
   clearable = false,
   freeText = false,
+
+  itemRenderer,
+  SearchBoxProps,
   ...props
-}: IPopupContentsProps<T>) {
+}: PopupContentsProps<T>) {
   const { options, value } = props;
   const classes = useStyles();
 
@@ -204,6 +139,25 @@ export default function PopupContents<T>({
   return (
     <>
       <Autocomplete
+        noOptionsText={`No ${labelPlural ?? label ?? 'options'}`}
+        renderOption={(option, { selected }) => {
+          let Icon: typeof CheckBoxIcon = CheckBoxOutlineBlankIcon;
+          if (multiple) {
+            if (selected) Icon = CheckBoxIcon;
+            else Icon = CheckBoxOutlineBlankIcon;
+          } else {
+            if (selected) Icon = RadioButtonCheckedIcon;
+            else Icon = RadioButtonUncheckedIcon;
+          }
+
+          return (
+            <>
+              <Icon className={classes.optionIcon} />
+              {itemRenderer ? itemRenderer(option, selected) : option.label}
+            </>
+          );
+        }}
+        getOptionDisabled={option => !!option.disabled}
         {...props}
         // This component is only mounted when the popup is open, so always show this
         open
@@ -228,43 +182,18 @@ export default function PopupContents<T>({
           ),
           option: classes.option,
           noOptions: classes.noOptions,
+          ...props.classes,
         }}
         // Prevent creation of extra wrapping `div`s
         PaperComponent={PopupWrapper as any}
         PopperComponent={PopupWrapper}
         // Prevent search box from rendering the selected items
         renderTags={() => null}
-        // noOptionsText="No labels"
-        renderOption={(option, { selected }) => {
-          let Icon: typeof CheckBoxIcon = CheckBoxOutlineBlankIcon;
-          if (multiple) {
-            if (selected) Icon = CheckBoxIcon;
-            else Icon = CheckBoxOutlineBlankIcon;
-          } else {
-            if (selected) Icon = RadioButtonCheckedIcon;
-            else Icon = RadioButtonUncheckedIcon;
-          }
-
-          return (
-            <>
-              <Icon className={classes.optionIcon} />
-              {option.label}
-            </>
-          );
-        }}
         getOptionLabel={option => option.label}
         getOptionSelected={(option, value) => option.value === value.value}
-        getOptionDisabled={option => !!option.disabled}
         // Render search box
         renderInput={params => (
           <TextField
-            ref={params.InputProps.ref}
-            inputProps={
-              searchable
-                ? params.inputProps
-                : // If not searchable, prevent user typing in this box
-                  { ...params.inputProps, value: '' }
-            }
             autoFocus
             onKeyDown={e => {
               // Escape key: close popup. Must be handled here since we cannot
@@ -275,6 +204,18 @@ export default function PopupContents<T>({
             margin="dense"
             label={searchBoxLabel}
             className={classes.search}
+            {...(SearchBoxProps as any)}
+            ref={params.InputProps.ref}
+            inputProps={
+              searchable
+                ? { ...params.inputProps, ...SearchBoxProps?.inputProps }
+                : // If not searchable, prevent user typing in this box
+                  {
+                    ...params.inputProps,
+                    ...SearchBoxProps?.inputProps,
+                    value: '',
+                  }
+            }
             InputProps={{
               disableUnderline: true,
               classes: { root: classes.searchInput },
@@ -286,6 +227,7 @@ export default function PopupContents<T>({
                   />
                 </InputAdornment>
               ),
+              ...SearchBoxProps?.InputProps,
             }}
           />
         )}

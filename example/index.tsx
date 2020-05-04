@@ -26,6 +26,7 @@ const App = () => {
           freeText
           // searchable={false}
           clearable
+          // renderOption={option => option.label}
         />
 
         <Grid container spacing={2} style={{ marginTop: 20, marginBottom: 50 }}>
@@ -44,7 +45,6 @@ const App = () => {
           labelPlural="Movies"
           selectAll={false}
           freeText
-          searchable={false}
           multiple={false}
           // clearable
         />
