@@ -127,8 +127,7 @@ export default function PopupContents<T>({
 
   let searchBoxLabel = '';
   if (searchable) {
-    if (freeText)
-      searchBoxLabel = `Search ${labelPlural ?? label} or Add a New ${label}`;
+    if (freeText) searchBoxLabel = `Search or Add ${label}`;
     else searchBoxLabel = `Search ${labelPlural ?? label}`;
   } else {
     if (multiple) searchBoxLabel = `Select ${labelPlural ?? label}`;
