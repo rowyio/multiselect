@@ -26,7 +26,11 @@
     "build-storybook": "build-storybook"
   },
   "peerDependencies": {
-    "react": ">=16"
+    "@material-ui/core": "^4.9.0",
+    "@material-ui/icons": "^4.9.0",
+    "@material-ui/lab": "^4.0.0-alpha.51",
+    "clsx": "^1.0.4",
+    "react": "^16.8.0"
   },
   "husky": {
     "hooks": {
@@ -37,10 +41,15 @@
     "printWidth": 80,
     "semi": true,
     "singleQuote": true,
-    "trailingComma": "es5"
+    "trailingComma": "es5",
+    "proseWrap": "always"
   },
   "devDependencies": {
+    "@antlerengineering/components": "^0.2.6",
     "@babel/core": "^7.9.6",
+    "@material-ui/core": "^4.9.0",
+    "@material-ui/icons": "^4.9.0",
+    "@material-ui/lab": "^4.0.0-alpha.51",
     "@storybook/addon-actions": "^5.3.18",
     "@storybook/addon-docs": "^5.3.18",
     "@storybook/addon-info": "^5.3.18",
@@ -50,8 +59,10 @@
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.7",
     "babel-loader": "^8.1.0",
+    "dompurify": "^2.0.10",
     "husky": "^4.2.5",
     "react": "^16.13.1",
+    "react-div-100vh": "^0.3.8",
     "react-docgen-typescript-loader": "^3.7.2",
     "react-dom": "^16.13.1",
     "react-is": "^16.13.1",
