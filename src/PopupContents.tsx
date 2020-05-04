@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 
 import {
   makeStyles,
@@ -9,7 +10,10 @@ import {
   Typography,
   Button,
 } from '@material-ui/core';
-import Autocomplete, { AutocompleteProps } from '@material-ui/lab/Autocomplete';
+import Autocomplete, {
+  AutocompleteProps,
+  createFilterOptions,
+} from '@material-ui/lab/Autocomplete';
 import { UseAutocompleteMultipleProps } from '@material-ui/lab/useAutocomplete';
 
 import SearchIcon from '@material-ui/icons/Search';
@@ -19,12 +23,19 @@ import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 // import AddIcon from '@material-ui/icons/Add'
 
+import PopupWrapper from './PopupWrapper';
+
 export const SEARCH_AREA_HEIGHT = 16 + 48 + 8;
 export const LISTBOX_MIN_HEIGHT = 100;
 export const FOOTER_HEIGHT = 48;
 
 const useStyles = makeStyles(theme =>
   createStyles({
+    root: {
+      '&$hideSearch': { marginTop: -SEARCH_AREA_HEIGHT },
+    },
+    hideSearch: {},
+
     paper: { margin: 0 },
     popper: { minWidth: '100%' },
     popperDisablePortal: { position: 'relative' },
@@ -39,9 +50,23 @@ const useStyles = makeStyles(theme =>
       padding: 0,
       minHeight: LISTBOX_MIN_HEIGHT,
       maxHeight: `calc(100vh - 96px - ${SEARCH_AREA_HEIGHT}px - ${FOOTER_HEIGHT}px)`,
+
+      '&$hideSearch': { minHeight: LISTBOX_MIN_HEIGHT + SEARCH_AREA_HEIGHT },
+    },
+    noOptions: {
+      ...theme.typography.button,
+      color: theme.palette.text.secondary,
+      userSelect: 'none',
+
+      height: LISTBOX_MIN_HEIGHT,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
 
     option: {
+      ...theme.typography.body2,
+
       position: 'relative',
       marginBottom: 1,
 
@@ -76,6 +101,7 @@ const useStyles = makeStyles(theme =>
       marginLeft: theme.spacing(1),
       fontFeatureSettings: '"tnum"',
       color: theme.palette.text.disabled,
+      userSelect: 'none',
     },
     footerButton: { display: 'flex' },
   })
@@ -87,60 +113,97 @@ export type Option<T> = {
   disabled?: boolean;
 };
 
+const filter = createFilterOptions<Option<any>>();
+
 export interface IPopupContentsProps<T>
   extends Partial<
     AutocompleteProps<Option<T>> & UseAutocompleteMultipleProps<Option<T>>
   > {
+  /** Received from root component. Must define type here as never undefined */
   options: Option<T>[];
-  value: any;
+  /** Received from root component. Must define type here as never undefined */
+  value: Option<T>[];
+  /** Received from root component */
   onClose: () => void;
+  /** Received from root component */
   onSelectAll: () => void;
+  /** Received from root component */
   onClear: () => void;
 
-  label?: string;
+  /** Used as label for search box and no options text */
   labelPlural?: string;
+  /** Backup label for search box if `labelPlural` undefined. Used for add item text */
+  label?: string;
+
+  /** Optionally prevent the user selecting multiple options. Default: true */
+  // multiple?: boolean;
+  /** Optionally prevent the user from searching options. Default: true */
+  searchable?: boolean;
+  /** Optionally prevent the user to select all options. Default: true */
+  selectAll?: boolean;
+  /** Optionally allow the user to add any custom value. Option value **must** be `string`. Default: false */
+  freeText?: boolean;
 }
 
 export default function PopupContents<T>({
   onClose,
   onSelectAll,
   onClear,
-  label,
+
   labelPlural,
+  label,
+
+  multiple = true,
+  searchable = true,
+  selectAll = true,
+  freeText,
   ...props
 }: IPopupContentsProps<T>) {
+  const { options, value } = props;
   const classes = useStyles();
+
+  let searchBoxLabel = '';
+  if (searchable) {
+    searchBoxLabel = `Search ${labelPlural ?? label}`;
+  } else {
+    if (multiple) searchBoxLabel = `Select ${labelPlural ?? label}`;
+    else searchBoxLabel = `Select a ${label}`;
+  }
+  let SearchBoxIcon = SearchIcon;
 
   return (
     <>
       <Autocomplete
         {...props}
+        // This component is only mounted when the popup is open, so always show this
         open
+        // A portal is created by the Select component (inside root component)
+        disablePortal
+        // Set to multiple by default in the function signature
+        multiple={multiple as any}
         // Cannot set `onClose` here, otherwise tabbing out of search box will
         // cause entire popup to close. This is set in the `handleBlur` prop
         // of the `input` element itself: https://github.com/mui-org/material-ui/blob/master/packages/material-ui-lab/src/useAutocomplete/useAutocomplete.js#L742
         // onClose={onClose}
-        multiple
+        // disableCloseOnSelect={!multiple}
         classes={{
+          root: clsx(classes.root, !searchable && classes.hideSearch),
           paper: classes.paper,
           popper: classes.popper,
           popperDisablePortal: classes.popperDisablePortal,
-          listbox: classes.listbox,
+          listbox: clsx(classes.listbox, !searchable && classes.hideSearch),
           option: classes.option,
+          noOptions: classes.noOptions,
         }}
-        // disableCloseOnSelect
-        disablePortal
-        PaperComponent={props => (
-          <div {...props} onClick={e => e.stopPropagation()} />
-        )}
-        PopperComponent={props => (
-          <div {...props} onClick={e => e.stopPropagation()} />
-        )}
+        // Prevent creation of extra wrapping `div`s
+        PaperComponent={PopupWrapper as any}
+        PopperComponent={PopupWrapper}
+        // Prevent search box from rendering the selected items
         renderTags={() => null}
         // noOptionsText="No labels"
         renderOption={(option, { selected }) => {
           let Icon: typeof CheckBoxIcon = CheckBoxOutlineBlankIcon;
-          if (true) {
+          if (multiple) {
             if (selected) Icon = CheckBoxIcon;
             else Icon = CheckBoxOutlineBlankIcon;
           } else {
@@ -155,20 +218,19 @@ export default function PopupContents<T>({
             </>
           );
         }}
-        // options={[...labels].sort((a, b) => {
-        //   // Display the selected labels first.
-        //   let ai = value.indexOf(a);
-        //   ai = ai === -1 ? value.length + labels.indexOf(a) : ai;
-        //   let bi = value.indexOf(b);
-        //   bi = bi === -1 ? value.length + labels.indexOf(b) : bi;
-        //   return ai - bi;
-        // })}
         getOptionLabel={option => option.label}
         getOptionSelected={(option, value) => option.value === value.value}
+        getOptionDisabled={option => !!option.disabled}
+        // Render search box
         renderInput={params => (
           <TextField
             ref={params.InputProps.ref}
-            inputProps={params.inputProps}
+            inputProps={
+              searchable
+                ? params.inputProps
+                : // If not searchable, prevent user typing in this box
+                  { ...params.inputProps, value: '' }
+            }
             autoFocus
             onKeyDown={e => {
               // Escape key: close popup. Must be handled here since we cannot
@@ -177,14 +239,14 @@ export default function PopupContents<T>({
             }}
             variant="filled"
             margin="dense"
-            label={`Search ${labelPlural ?? label}`}
+            label={searchBoxLabel}
             className={classes.search}
             InputProps={{
               disableUnderline: true,
               classes: { root: classes.searchInput },
               endAdornment: (
                 <InputAdornment position="end">
-                  <SearchIcon
+                  <SearchBoxIcon
                     color="action"
                     style={{ pointerEvents: 'none' }}
                   />
@@ -193,6 +255,30 @@ export default function PopupContents<T>({
             }}
           />
         )}
+        // Prevent search box resetting when out of focus
+        clearOnBlur={false}
+        // Override filterOptions prop to allow user to add an option
+        filterOptions={
+          searchable
+            ? // If freeText, show Add value option
+              freeText
+              ? (options, params) => {
+                  const filtered = filter(options, params) as Option<any>[];
+
+                  // Suggest the creation of a new value
+                  if (params.inputValue !== '')
+                    filtered.push({
+                      value: params.inputValue,
+                      label: `Add “${params.inputValue}”`,
+                    });
+
+                  return filtered;
+                }
+              : // If searchable but not freeText, use normal filter method
+                undefined
+            : // If not searchable, always show all options
+              () => options
+        }
       />
 
       <Grid
@@ -204,20 +290,22 @@ export default function PopupContents<T>({
       >
         <Grid item>
           <Typography variant="button" className={classes.count}>
-            {props.value.length} of {props.options.length}
+            {value.length} of {options.length}
           </Typography>
         </Grid>
-        <Grid item xs>
-          {props.value.length > 1 ? (
-            <Button onClick={onClear} className={classes.footerButton}>
-              Clear
-            </Button>
-          ) : (
-            <Button onClick={onSelectAll} className={classes.footerButton}>
-              Select All
-            </Button>
-          )}
-        </Grid>
+        {selectAll && (
+          <Grid item xs>
+            {value.length > 0 ? (
+              <Button onClick={onClear} className={classes.footerButton}>
+                Clear
+              </Button>
+            ) : (
+              <Button onClick={onSelectAll} className={classes.footerButton}>
+                Select All
+              </Button>
+            )}
+          </Grid>
+        )}
 
         <Grid item>
           <Button onClick={onClose} className={classes.footerButton}>

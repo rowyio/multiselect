@@ -19,6 +19,10 @@ const App = () => {
           onChange={setValue}
           label="Movie"
           labelPlural="movies"
+          selectAll={false}
+          freeText
+          // searchable={false}
+          // multiple={false}
         />
 
         <Grid container spacing={2} style={{ marginTop: 20 }}>

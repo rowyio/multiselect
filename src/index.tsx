@@ -34,20 +34,7 @@ export interface IMultiSelectProps<T>
   options: (Option<T> | string)[];
   value: T[];
   onChange: (value: T[]) => void;
-  // label: string;
-  // value: string[];
-  // editable?: boolean;
-  // /** The list of options to display. Passing `string[]` will auto-transform */
-  // options: OptionType[] | string[];
   // itemRenderer?: (option: OptionType, isSelected: boolean) => React.ReactNode;
-  // searchable?: boolean;
-  // onChange: (value: string[]) => void;
-  // /** Optionally allow the user to select all options */
-  // selectAll?: boolean;
-  // /** Optionally allow the user to add a custom option */
-  // freeText?: boolean;
-  // /** Optionally set this prop to `false` to only allow one option */
-  // multiple?: boolean;
   // /** Optional style overrides for root MUI `TextField` component */
   // className?: string;
   // /** Override any props of the root MUI `TextField` component */
@@ -74,6 +61,7 @@ export default function MultiSelect<T = string>({
 // backdrop = true,
 // ...props
 IMultiSelectProps<T>) {
+  const { freeText, multiple } = props;
   const classes = useStyles();
 
   // const {
@@ -91,10 +79,12 @@ IMultiSelectProps<T>) {
   //   width: dropdownWidth,
   // });
 
+  // Must control popup open state here to programmatically close it
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  // Close the popup when tabbing out
   const handlePaperFocus = (e: React.FocusEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) handleClose();
   };
@@ -119,21 +109,26 @@ IMultiSelectProps<T>) {
           | Option<T>
           | undefined
     )
-    .filter(item => item !== undefined);
+    .filter(item => item !== undefined) as Option<T>[];
 
-  // // If `freeText` enabled, show the user’s custom fields
-  // if (freeText) {
-  //   // `value` prop is an array of all values. It removes labels
-  //   const formattedValues = sanitisedValue?.map(x => ({ label: x, value: x }));
-  //   options = _unionWith(
-  //     options,
-  //     formattedValues,
-  //     (a, b) => a.value === b.value
-  //   );
-  // }
+  // If `freeText` enabled, show the user’s custom values
+  // at the start of the list
+  if (freeText) {
+    for (let i = value.length - 1; i >= 0; i--) {
+      const item = value[i];
+      if (options.findIndex(option => option.value === item.value) <= -1)
+        options.unshift(item);
+    }
+  }
 
-  const handleChange: IPopupContentsProps<T>['onChange'] = (_, newValue) =>
-    onChange(newValue.map(item => item.value));
+  const handleChange: IPopupContentsProps<T>['onChange'] = (_, newValue) => {
+    if (multiple) {
+      onChange(newValue.map(item => item.value));
+    } else {
+      // onChange(newValue.value);
+      handleClose();
+    }
+  };
 
   const handleSelectAll = () => onChange(options.map(item => item.value));
   const handleClear = () => onChange([]);
@@ -171,17 +166,20 @@ IMultiSelectProps<T>) {
             disablePadding: true,
             component: 'div',
             autoFocus: false,
+            // Remove listbox role. This is created in the Autocomplete listbox.
             role: '',
+            // Allow the user to click and tab between elements inside the
+            // popup without closing the popup. Also fixes the “S” bug.
             onKeyDown: () => {},
           } as any,
+          // Always display the popup below the main select element.
           getContentAnchorEl: null,
           anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
           transformOrigin: { vertical: 'top', horizontal: 'center' },
+          // Allow a backdrop to be rendered via prop
           BackdropProps: { invisible: !backdrop },
+          // Allow the user to tab out to close the popup
           PaperProps: { onFocus: handlePaperFocus },
-          // disableAutoFocus: true,
-          // disableEnforceFocus: true,
-          // disableRestoreFocus: true,
           //   ...TextFieldProps.SelectProps?.MenuProps,
         },
       }}
