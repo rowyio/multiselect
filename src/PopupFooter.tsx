@@ -8,7 +8,7 @@ import {
   Button,
 } from '@material-ui/core';
 
-import { PopupFooterProps } from './constants/props';
+import { PopupFooterProps } from './props';
 import { FOOTER_HEIGHT } from './constants/layout';
 
 const useStyles = makeStyles(theme =>
@@ -72,10 +72,14 @@ export default function PopupFooter({
         </Grid>
         {selectAll ? (
           <Grid item xs>
-            {value.length > 0 ? (
+            {value.length > 0 && clearable !== false ? (
               clearButton
             ) : (
-              <Button onClick={onSelectAll} className={classes.button}>
+              <Button
+                onClick={onSelectAll}
+                className={classes.button}
+                disabled={value.length > 0}
+              >
                 Select All
               </Button>
             )}

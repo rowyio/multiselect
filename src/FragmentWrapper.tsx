@@ -5,10 +5,10 @@ import * as React from 'react';
  * wrapping `div` with `role="option" tabIndex="0"`. Allows the user to tab out
  * to exit the popup.
  */
-const PopupWrapper = React.forwardRef<any, { children: React.ReactNode }>(
-  function PopupWrapper({ children }, _) {
+const FragmentWrapper = React.forwardRef<any, { children: React.ReactNode }>(
+  function FragmentWrapper({ children }, _) {
     return <>{children}</>;
   }
 );
 
-export default PopupWrapper;
+export default FragmentWrapper;

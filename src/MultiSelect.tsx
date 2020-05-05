@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import { makeStyles, createStyles, TextField } from '@material-ui/core';
 
 import PopupContents from './PopupContents';
-import PopupWrapper from './PopupWrapper';
+import FragmentWrapper from './FragmentWrapper';
 
-import { MultiSelectProps, Option } from './constants/props';
+import { MultiSelectProps, Option } from './props';
 import {
   SEARCH_AREA_HEIGHT,
   LISTBOX_MIN_HEIGHT,
@@ -20,19 +20,55 @@ const useStyles = makeStyles(() =>
   })
 );
 
+/**
+ * A component to select multiple items from a list of options using the
+ * [Material-UI Autocomplete component](https://material-ui.com/components/autocomplete/).
+ *
+ * To use, you must provide at least the `value`, `onChange`, and `options`
+ * props. You should also provide a `label` and `labelPlural` prop. By default,
+ * the component is in multi-select mode and values are strings.
+ *
+ * ## `options` prop
+ *
+ * The simplest value for the `options` prop is an array of strings.
+ *
+ * If you need more control over the value returned by MultiSelect, pass an
+ * array of `Option` objects, which must follow this type:
+ *
+ * ```ts
+ * type Option<T = string> = {
+ *   value: T;
+ *   label: string;
+ *   disabled?: boolean;
+ * }
+ * ```
+ *
+ * ## `value` and `onChange` prop types depend on the `multiple` prop
+ *
+ * `value` must be an array of `T` in multi-select mode.
+ *
+ * In single-select mode, it must be either `T` itself or `null`.
+ *
+ * The first parameter of `onChange` follows the same type as `value`.
+ */
 export default function MultiSelect<T = string>({
   options: optionsProp,
   value: valueProp,
   onChange,
+  label = '',
 
+  disabled = false,
   multiple = true,
+  searchable = true,
+  selectAll = true,
+  clearable = true,
+  freeText = false,
 
   displayEmpty = false,
   backdrop = false,
   TextFieldProps,
   ...props
 }: MultiSelectProps<T>) {
-  const { freeText, label } = props;
   const classes = useStyles();
 
   // Must control popup open state here to programmatically close it
@@ -46,12 +82,9 @@ export default function MultiSelect<T = string>({
   };
 
   // Transform `option` prop if it’s just strings
-  const options = optionsProp.map(
-    item =>
-      (typeof item === 'string'
-        ? { label: item, value: item }
-        : item) as Option<T>
-  );
+  const options = (typeof optionsProp[0] === 'string'
+    ? (optionsProp as string[]).map(item => ({ label: item, value: item }))
+    : optionsProp) as Option<T>[];
 
   // Transform `value` to `Option` type
   let value: Option<T>[] | Option<T> | null;
@@ -113,6 +146,11 @@ export default function MultiSelect<T = string>({
     multiple,
     options,
     value,
+    label,
+    searchable,
+    selectAll,
+    clearable,
+    freeText,
     onChange: handleChange,
     onClose: handleClose,
     onSelectAll: handleSelectAll,
@@ -125,6 +163,7 @@ export default function MultiSelect<T = string>({
       select
       fullWidth
       {...(TextFieldProps as any)}
+      disabled={disabled}
       InputLabelProps={{
         shrink:
           displayEmpty ||
@@ -178,9 +217,9 @@ export default function MultiSelect<T = string>({
         },
       }}
     >
-      <PopupWrapper>
+      <FragmentWrapper>
         <PopupContents {...(PopupContentsProps as any)} />
-      </PopupWrapper>
+      </FragmentWrapper>
     </TextField>
   );
 }

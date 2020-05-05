@@ -17,10 +17,10 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 
-import PopupWrapper from './PopupWrapper';
+import FragmentWrapper from './FragmentWrapper';
 import PopupFooter from './PopupFooter';
 
-import { PopupContentsProps, Option } from './constants/props';
+import { PopupContentsProps, Option } from './props';
 import {
   SEARCH_AREA_HEIGHT,
   LISTBOX_MIN_HEIGHT,
@@ -115,24 +115,27 @@ const useStyles = makeStyles(theme =>
 const filter = createFilterOptions<Option<any>>();
 
 export default function PopupContents<T>({
+  multiple,
+  options,
+  value,
+  onChange,
+
   onClose,
   onSelectAll,
   onClear,
 
-  labelPlural,
-  label,
+  labelPlural = '',
+  label = '',
 
-  multiple,
   searchable = true,
   selectAll = true,
-  clearable = false,
+  clearable = true,
   freeText = false,
 
   itemRenderer,
   SearchBoxProps,
-  ...props
+  AutocompleteProps,
 }: PopupContentsProps<T>) {
-  const { options, value } = props;
   const classes = useStyles();
 
   let searchBoxLabel = '';
@@ -167,13 +170,17 @@ export default function PopupContents<T>({
           );
         }}
         getOptionDisabled={option => !!option.disabled}
-        {...props}
+        {...AutocompleteProps}
         // This component is only mounted when the popup is open, so always show this
         open
         // A portal is created by the Select component (inside root component)
         disablePortal
         // Set to multiple by default in the function signature
         multiple={multiple as any}
+        options={options}
+        value={value as any}
+        onChange={onChange as any}
+        // onChange={onChange}
         // Cannot set `onClose` here, otherwise tabbing out of search box will
         // cause entire popup to close. This is set in the `handleBlur` prop
         // of the `input` element itself: https://github.com/mui-org/material-ui/blob/master/packages/material-ui-lab/src/useAutocomplete/useAutocomplete.js#L742
@@ -191,11 +198,11 @@ export default function PopupContents<T>({
           ),
           option: classes.option,
           noOptions: classes.noOptions,
-          ...props.classes,
+          ...AutocompleteProps?.classes,
         }}
         // Prevent creation of extra wrapping `div`s
-        PaperComponent={PopupWrapper as any}
-        PopperComponent={PopupWrapper}
+        PaperComponent={FragmentWrapper as any}
+        PopperComponent={FragmentWrapper}
         // Prevent search box from rendering the selected items
         renderTags={() => null}
         getOptionLabel={option => option.label}
@@ -206,7 +213,7 @@ export default function PopupContents<T>({
             autoFocus
             onKeyDown={e => {
               // Escape key: close popup. Must be handled here since we cannot
-              // pass the `onClose` prop to the root `Autocomplete` component.
+              // pass the `onClose` prop to the root Autocomplete component.
               if (e.key === 'Escape') onClose();
             }}
             variant="filled"
