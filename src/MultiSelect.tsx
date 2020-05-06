@@ -172,8 +172,14 @@ export default function MultiSelect<T = string>({
       }}
       SelectProps={{
         open,
-        onOpen: handleOpen,
-        onClose: handleClose,
+        onOpen: e => {
+          handleOpen();
+          TextFieldProps?.SelectProps?.onOpen?.(e);
+        },
+        onClose: e => {
+          handleClose();
+          TextFieldProps?.SelectProps?.onClose?.(e);
+        },
         renderValue: _ => {
           if (Array.isArray(value)) {
             if (value.length === 1) return value[0].label;
