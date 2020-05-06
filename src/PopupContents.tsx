@@ -176,7 +176,7 @@ export default function PopupContents<T>({
         // A portal is created by the Select component (inside root component)
         disablePortal
         // Set to multiple by default in the function signature
-        multiple={multiple as any}
+        multiple={multiple}
         options={options}
         value={value as any}
         onChange={onChange as any}

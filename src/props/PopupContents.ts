@@ -92,14 +92,14 @@ export type PopupContentsMultipleProps<T> = {
   multiple: true;
   options: Option<T>[];
   value: Option<T>[];
-  onChange: UseAutocompleteMultipleProps<Option<T>>['onChange'];
+  onChange: NonNullable<UseAutocompleteMultipleProps<Option<T>>['onChange']>;
 } & PopupContentsCommonProps<T>;
 
 export type PopupContentsSingleProps<T> = {
   multiple: false;
   options: Option<T>[];
   value: Option<T> | null;
-  onChange: UseAutocompleteSingleProps<Option<T>>['onChange'];
+  onChange: NonNullable<UseAutocompleteSingleProps<Option<T>>['onChange']>;
 } & PopupContentsCommonProps<T>;
 
 // Explicitly separate type intersections based off `multiple` prop
