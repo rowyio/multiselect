@@ -53,9 +53,11 @@ const useStyles = makeStyles(theme =>
       width: '100%',
       boxSizing: 'border-box',
 
-      overflow: 'hidden',
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      lineHeight: 'normal',
+      top: -3,
     },
     searchLabelShrink: { paddingRight: 0 },
 

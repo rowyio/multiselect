@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { withKnobs, boolean } from '@storybook/addon-knobs';
+import { withKnobs, boolean, text } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 
 import MultiSelect, { MultiSelectProps } from '../src';
@@ -25,8 +25,8 @@ export const Multiple = () => {
 
   return (
     <MultiSelect
-      label="Movie"
-      labelPlural="Movies"
+      label={text('Label', 'Movie')}
+      labelPlural={text('Label plural', 'Movies')}
       options={top100Films}
       value={value}
       onChange={setValue}
@@ -47,8 +47,8 @@ export const Single = () => {
 
   return (
     <MultiSelect
-      label="Movie"
-      labelPlural="Movies"
+      label={text('Label', 'Movie')}
+      labelPlural={text('Label plural', 'Movies')}
       options={top100Films}
       multiple={false}
       value={value}
