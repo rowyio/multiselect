@@ -137,8 +137,8 @@ export default function MultiSelect<T = string>({
   const handleChange = (_: any, newValue: any) => {
     if (multiple) {
       onChange(newValue.map((item: any) => item.value));
-    } else {
-      onChange(newValue?.value ?? null);
+    } else if (newValue) {
+      onChange(newValue.value);
       handleClose();
     }
   };
