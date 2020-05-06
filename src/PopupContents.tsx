@@ -143,9 +143,9 @@ export default function PopupContents<T>({
   let searchBoxLabel = '';
   if (searchable) {
     if (freeText) searchBoxLabel = `Search or Add ${label}`;
-    else searchBoxLabel = `Search ${labelPlural ?? label}`;
+    else searchBoxLabel = `Search ${labelPlural || label}`;
   } else {
-    if (multiple) searchBoxLabel = `Select ${labelPlural ?? label}`;
+    if (multiple) searchBoxLabel = `Select ${labelPlural || label}`;
     else searchBoxLabel = `Select a ${label}`;
   }
   let SearchBoxIcon = SearchIcon;
@@ -153,7 +153,7 @@ export default function PopupContents<T>({
   return (
     <>
       <Autocomplete
-        noOptionsText={`No ${labelPlural ?? label ?? 'options'}`}
+        noOptionsText={`No ${labelPlural || label || 'options'}`}
         renderOption={(option, { selected }) => {
           let Icon: typeof CheckBoxIcon = CheckBoxOutlineBlankIcon;
           if (multiple) {
