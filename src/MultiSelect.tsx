@@ -66,15 +66,23 @@ export default function MultiSelect<T = string>({
 
   displayEmpty = false,
   backdrop = false,
-  TextFieldProps,
+  onOpen,
+  onClose,
+  TextFieldProps = {},
   ...props
 }: MultiSelectProps<T>) {
   const classes = useStyles();
 
   // Must control popup open state here to programmatically close it
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpen = () => {
+    setOpen(true);
+    onOpen?.();
+  };
+  const handleClose = () => {
+    setOpen(false);
+    onClose?.();
+  };
 
   // Close the popup when tabbing out
   const handlePaperFocus = (e: React.FocusEvent<HTMLDivElement>) => {
@@ -143,9 +151,8 @@ export default function MultiSelect<T = string>({
   // keyword to appease TypeScript
   const PopupContentsProps = {
     ...props,
-    multiple,
     options,
-    value,
+    // value,
     label,
     searchable,
     selectAll,
@@ -168,18 +175,12 @@ export default function MultiSelect<T = string>({
         shrink:
           displayEmpty ||
           (Array.isArray(valueProp) ? valueProp.length > 0 : !!valueProp),
-        ...TextFieldProps?.InputLabelProps,
+        ...TextFieldProps.InputLabelProps,
       }}
       SelectProps={{
         open,
-        onOpen: e => {
-          handleOpen();
-          TextFieldProps?.SelectProps?.onOpen?.(e);
-        },
-        onClose: e => {
-          handleClose();
-          TextFieldProps?.SelectProps?.onClose?.(e);
-        },
+        onOpen: handleOpen,
+        onClose: handleClose,
         renderValue: _ => {
           if (Array.isArray(value)) {
             if (value.length === 1) return value[0].label;
@@ -194,7 +195,7 @@ export default function MultiSelect<T = string>({
           }
         },
         displayEmpty: true,
-        ...TextFieldProps?.SelectProps,
+        ...TextFieldProps.SelectProps,
         MenuProps: {
           classes: { paper: classes.paper },
           // Always display the popup below the main select element.
@@ -202,10 +203,10 @@ export default function MultiSelect<T = string>({
           anchorOrigin: { vertical: 'bottom', horizontal: 'center' },
           transformOrigin: { vertical: 'top', horizontal: 'center' },
           // Allow a backdrop to be rendered via prop
-          ...TextFieldProps?.SelectProps?.MenuProps,
+          ...TextFieldProps.SelectProps?.MenuProps,
           BackdropProps: {
             invisible: !backdrop,
-            ...TextFieldProps?.SelectProps?.MenuProps?.BackdropProps,
+            ...TextFieldProps.SelectProps?.MenuProps?.BackdropProps,
           },
           // Allow the user to tab out to close the popup
           PaperProps: { onFocus: handlePaperFocus },
@@ -224,7 +225,19 @@ export default function MultiSelect<T = string>({
       }}
     >
       <FragmentWrapper>
-        <PopupContents {...(PopupContentsProps as any)} />
+        {multiple ? (
+          <PopupContents
+            multiple={true}
+            value={value as Option<T>[]}
+            {...PopupContentsProps}
+          />
+        ) : (
+          <PopupContents
+            multiple={false}
+            value={value as Option<T> | null}
+            {...PopupContentsProps}
+          />
+        )}
       </FragmentWrapper>
     </TextField>
   );

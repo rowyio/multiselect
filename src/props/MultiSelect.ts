@@ -22,6 +22,10 @@ interface MultiSelectCommonProps<T>
   displayEmpty?: boolean;
   /** Show the backdrop when the dropdown popup is open */
   backdrop?: boolean;
+  /** Callback fired when popup opens */
+  onOpen?: () => void;
+  /** Callback fired when popup closes */
+  onClose?: () => void;
   /**
    * Override any props of the root MUI TextField component.
    * [See props here](https://material-ui.com/api/text-field/)

@@ -35,6 +35,8 @@ export const Multiple = () => {
       freeText={boolean('Free text', false)}
       selectAll={boolean('Select all', true)}
       clearable={boolean('Clearable', true)}
+      onOpen={action('Opened')}
+      onClose={action('Closed')}
     />
   );
 };
@@ -56,6 +58,8 @@ export const Single = () => {
       freeText={boolean('Free text', false)}
       selectAll={boolean('Select all', true)}
       clearable={boolean('Clearable', true)}
+      onOpen={action('Opened')}
+      onClose={action('Closed')}
     />
   );
 };
