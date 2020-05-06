@@ -107,7 +107,7 @@ export default function PopupFooter({
         spacing={2}
         className={classes.root}
         justify="space-between"
-        alignItems="baseline"
+        alignItems="center"
       >
         <Grid item>{clearButton}</Grid>
       </Grid>
