@@ -6,6 +6,7 @@ import PopupContents from './PopupContents';
 import FragmentWrapper from './FragmentWrapper';
 
 import { MultiSelectProps, Option } from './props';
+import { AutocompleteChangeReason } from '@material-ui/lab/useAutocomplete';
 import {
   SEARCH_AREA_HEIGHT,
   LISTBOX_MIN_HEIGHT,
@@ -134,18 +135,26 @@ export default function MultiSelect<T = string>({
     }
   }
 
-  const handleChange = (_: any, newValue: any) => {
+  const handleChange = (
+    _: any,
+    newValue: any,
+    reason: AutocompleteChangeReason
+  ) => {
     if (multiple) {
-      onChange(newValue.map((item: any) => item.value));
+      onChange(
+        newValue.map((item: any) => item.value),
+        reason
+      );
     } else if (newValue) {
-      onChange(newValue.value);
+      onChange(newValue.value, reason);
       handleClose();
     }
   };
 
   const handleSelectAll = () =>
-    onChange(options.map(item => item.value) as any);
-  const handleClear = () => onChange((multiple ? [] : null) as any);
+    onChange(options.map(item => item.value) as any, 'select-option');
+  const handleClear = () =>
+    onChange((multiple ? [] : null) as any, 'remove-option');
 
   // Must declare props to pass to PopupContents here so they to use `as any`
   // keyword to appease TypeScript

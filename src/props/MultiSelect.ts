@@ -1,4 +1,5 @@
 import { TextFieldProps } from '@material-ui/core';
+import { AutocompleteChangeReason } from '@material-ui/lab/useAutocomplete';
 import { Option } from './Option';
 import { PopupContentsCommonProps } from './PopupContents';
 
@@ -62,12 +63,12 @@ export type MultiSelectProps<T> =
        * Note if `multiple: false`, the `value` parameter may be `null` and the
        * popup will automatically close whenever the value changes
        */
-      onChange: (value: T[]) => void;
+      onChange: (value: T[], reason: AutocompleteChangeReason) => void;
     } & MultiSelectCommonProps<T>)
   | ({
       multiple: false;
       value: T | null;
-      onChange: (value: T | null) => void;
+      onChange: (value: T | null, reason: AutocompleteChangeReason) => void;
     } & MultiSelectCommonProps<T>);
 
 type PrivatePopupContentsProps =

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { withKnobs, boolean, text } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 
-import MultiSelect, { MultiSelectProps } from '../src';
+import MultiSelect from '../src';
 import { top100Films } from './data';
 
 export default {
@@ -18,10 +18,11 @@ export default {
 
 export const Multiple = () => {
   const [value, setValue] = useState<string[]>(['The Godfather']);
-  useEffect(
-    () => action('Value changed')(value, 'value is an array of strings'),
-    [value]
-  );
+
+  const handleChange = (value, reason) => {
+    setValue(value);
+    action('Value cahgned')(value, reason);
+  };
 
   return (
     <MultiSelect
@@ -29,7 +30,7 @@ export const Multiple = () => {
       labelPlural={text('Label plural', 'Movies')}
       options={top100Films}
       value={value}
-      onChange={setValue}
+      onChange={handleChange}
       disabled={boolean('Disabled', false)}
       searchable={boolean('Searchable', true)}
       freeText={boolean('Free text', false)}
@@ -43,7 +44,11 @@ export const Multiple = () => {
 
 export const Single = () => {
   const [value, setValue] = useState<string>('The Godfather');
-  useEffect(() => action('Value changed')(value, 'value is a string'), [value]);
+
+  const handleChange = (value, reason) => {
+    setValue(value);
+    action('Value cahgned')(value, reason);
+  };
 
   return (
     <MultiSelect
@@ -52,7 +57,7 @@ export const Single = () => {
       options={top100Films}
       multiple={false}
       value={value}
-      onChange={setValue}
+      onChange={handleChange}
       disabled={boolean('Disabled', false)}
       searchable={boolean('Searchable', true)}
       freeText={boolean('Free text', false)}
