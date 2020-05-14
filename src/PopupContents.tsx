@@ -239,6 +239,7 @@ export default function PopupContents<T>({
         // Render search box
         renderInput={params => (
           <TextField
+            {...params}
             autoFocus
             onKeyDown={e => {
               // Escape key: close popup. Must be handled here since we cannot
