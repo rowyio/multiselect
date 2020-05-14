@@ -172,6 +172,33 @@ export default function PopupContents<T>({
           );
         }}
         getOptionDisabled={option => !!option.disabled}
+        // Override filterOptions prop to allow user to add an option
+        filterOptions={
+          searchable
+            ? // If freeText, show Add value option
+              freeText
+              ? (options, params) => {
+                  const filtered = filter(options, params) as Option<any>[];
+
+                  // Suggest the creation of a new value
+                  if (
+                    params.inputValue !== '' &&
+                    filtered.findIndex(
+                      option => option.value === params.inputValue
+                    ) <= -1
+                  )
+                    filtered.push({
+                      value: params.inputValue,
+                      label: `Add “${params.inputValue}”`,
+                    });
+
+                  return filtered;
+                }
+              : // If searchable but not freeText, use normal filter method
+                ((undefined as unknown) as () => Option<T>[])
+            : // If not searchable, always show all options
+              () => options
+        }
         {...AutocompleteProps}
         // This component is only mounted when the popup is open, so always show this
         open
@@ -258,33 +285,6 @@ export default function PopupContents<T>({
         )}
         // Prevent search box resetting when out of focus
         clearOnBlur={false}
-        // Override filterOptions prop to allow user to add an option
-        filterOptions={
-          searchable
-            ? // If freeText, show Add value option
-              freeText
-              ? (options, params) => {
-                  const filtered = filter(options, params) as Option<any>[];
-
-                  // Suggest the creation of a new value
-                  if (
-                    params.inputValue !== '' &&
-                    filtered.findIndex(
-                      option => option.value === params.inputValue
-                    ) <= -1
-                  )
-                    filtered.push({
-                      value: params.inputValue,
-                      label: `Add “${params.inputValue}”`,
-                    });
-
-                  return filtered;
-                }
-              : // If searchable but not freeText, use normal filter method
-                ((undefined as unknown) as () => Option<T>[])
-            : // If not searchable, always show all options
-              () => options
-        }
       />
 
       <PopupFooter

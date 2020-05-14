@@ -83,7 +83,6 @@ type ExposedUseAutocompleteProps<T> = Omit<
   | 'getOptionSelected'
   | 'clearOnBlur'
   | 'disableCloseOnSelect'
-  | 'filterOptions'
   | 'onOpen'
   | 'openOnFocus'
 >;
