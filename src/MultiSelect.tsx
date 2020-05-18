@@ -99,11 +99,21 @@ export default function MultiSelect<T = string>({
   let value: Option<T>[] | Option<T> | null;
   if (multiple) {
     value = (valueProp as T[])
-      .map(item => options.find(option => option.value === item))
+      .map(
+        item =>
+          options.find(option => option.value === item) ?? {
+            label: item,
+            value: item,
+          }
+      )
       .filter(item => item !== undefined) as Option<T>[];
   } else {
     if (!valueProp || ((valueProp as unknown) as string) === '') value = null;
-    else value = options.find(option => option.value === valueProp) ?? null;
+    else
+      value = options.find(option => option.value === valueProp) ?? {
+        label: (valueProp as unknown) as string,
+        value: valueProp as T,
+      };
   }
 
   // If `freeText` enabled, show the user’s custom values
