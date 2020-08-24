@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import clsx from 'clsx';
 
 import { makeStyles, createStyles, TextField } from '@material-ui/core';
 
@@ -17,7 +18,14 @@ const useStyles = makeStyles(() =>
   createStyles({
     paper: {
       minHeight: SEARCH_AREA_HEIGHT + LISTBOX_MIN_HEIGHT + FOOTER_HEIGHT,
+
+      '&$hideSearch': { minHeight: LISTBOX_MIN_HEIGHT + FOOTER_HEIGHT },
+      '&$noFooter': { minHeight: SEARCH_AREA_HEIGHT + LISTBOX_MIN_HEIGHT },
+      '&$hideSearch$noFooter': { minHeight: LISTBOX_MIN_HEIGHT },
     },
+
+    hideSearch: {},
+    noFooter: {},
   })
 );
 
@@ -207,7 +215,13 @@ export default function MultiSelect<T = string>({
         displayEmpty: true,
         ...TextFieldProps.SelectProps,
         MenuProps: {
-          classes: { paper: classes.paper },
+          classes: {
+            paper: clsx(
+              classes.paper,
+              !searchable && classes.hideSearch,
+              !multiple && !clearable && classes.noFooter
+            ),
+          },
           // Always display the popup below the main select element.
           getContentAnchorEl: null,
           anchorOrigin: { vertical: 'bottom', horizontal: 'center' },

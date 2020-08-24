@@ -28,7 +28,7 @@ export const Multiple = () => {
     <MultiSelect
       label={text('Label', 'Movie')}
       labelPlural={text('Label plural', 'Movies')}
-      options={top100Films}
+      options={boolean('Empty', false) ? [] : top100Films}
       value={value}
       onChange={handleChange}
       disabled={boolean('Disabled', false)}
@@ -54,7 +54,7 @@ export const Single = () => {
     <MultiSelect
       label={text('Label', 'Movie')}
       labelPlural={text('Label plural', 'Movies')}
-      options={top100Films}
+      options={boolean('Empty', false) ? [] : top100Films}
       multiple={false}
       value={value}
       onChange={handleChange}
