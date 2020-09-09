@@ -164,12 +164,10 @@ export default function PopupContents<T>({
             else Icon = RadioButtonUncheckedIcon;
           }
 
-          if (itemRenderer) return itemRenderer(option, selected);
-
           return (
             <>
               <Icon className={classes.optionIcon} />
-              {option.label}
+              {itemRenderer ? itemRenderer(option, selected) : option.label}
             </>
           );
         }}
