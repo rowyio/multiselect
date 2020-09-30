@@ -41,6 +41,7 @@ export default function PopupFooter({
   onSelectAll,
   onClear,
   onClose,
+  countText,
   value,
   options,
 }: PopupFooterProps) {
@@ -67,7 +68,7 @@ export default function PopupFooter({
       >
         <Grid item>
           <Typography variant="button" className={classes.count}>
-            {value.length} of {options.length}
+            {countText ?? `${value.length} of ${options.length}`}
           </Typography>
         </Grid>
         {selectAll ? (

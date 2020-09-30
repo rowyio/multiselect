@@ -133,6 +133,7 @@ export default function PopupContents<T>({
   selectAll = true,
   clearable = true,
   freeText = false,
+  countText,
 
   itemRenderer,
   SearchBoxProps,
@@ -295,6 +296,7 @@ export default function PopupContents<T>({
         onSelectAll={onSelectAll}
         onClear={onClear}
         onClose={onClose}
+        countText={countText}
         value={value}
         options={options}
       />

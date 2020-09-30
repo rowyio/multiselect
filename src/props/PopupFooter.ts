@@ -5,6 +5,7 @@ export type PopupFooterProps = {
   onSelectAll: () => void;
   onClear: () => void;
   onClose: () => void;
+  countText?: React.ReactNode;
   value: any;
   options: any[];
 };

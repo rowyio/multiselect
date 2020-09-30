@@ -34,6 +34,8 @@ export type PopupContentsCommonProps<T> = {
    * Option value **must** be string
    */
   freeText?: boolean;
+  /** Optionally override the text shown in the count on the left of the footer */
+  countText?: React.ReactNode;
 
   /**
    * Optionally override how each option is rendered, while still showing the
