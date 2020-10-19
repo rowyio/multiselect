@@ -51,6 +51,7 @@ export default function PopupFooter({
     <Button
       onClick={onClear}
       className={classes.button}
+      color="primary"
       disabled={!value || value?.length === 0}
     >
       Clear
@@ -79,6 +80,7 @@ export default function PopupFooter({
               <Button
                 onClick={onSelectAll}
                 className={classes.button}
+                color="primary"
                 disabled={value.length > 0}
               >
                 Select All
@@ -94,7 +96,7 @@ export default function PopupFooter({
         )}
 
         <Grid item>
-          <Button onClick={onClose} className={classes.button}>
+          <Button onClick={onClose} className={classes.button} color="primary">
             Done
           </Button>
         </Grid>

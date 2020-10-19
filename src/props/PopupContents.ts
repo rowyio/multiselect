@@ -1,4 +1,4 @@
-import { TextFieldProps, StandardProps } from '@material-ui/core';
+import { TextFieldProps, StandardProps, ButtonProps } from '@material-ui/core';
 import {
   AutocompleteProps,
   AutocompleteClassKey,
@@ -57,6 +57,11 @@ export type PopupContentsCommonProps<T> = {
   AutocompleteProps?: Partial<
     ExposedUseAutocompleteProps<T> & ExposedAutocompleteProps<T>
   >;
+  /**
+   * Override certain props of the “Add New” Button component.
+   * [See props here](https://material-ui.com/api/button/)
+   */
+  AddButtonProps?: Partial<ButtonProps>;
 };
 
 // AutocompleteProps that can be overridden from the root MultiSelect props

@@ -7,9 +7,7 @@ import {
   TextField,
   InputAdornment,
 } from '@material-ui/core';
-import Autocomplete, {
-  createFilterOptions,
-} from '@material-ui/lab/Autocomplete';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import SearchIcon from '@material-ui/icons/Search';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
@@ -18,6 +16,7 @@ import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 
 import FragmentWrapper from './FragmentWrapper';
+import AddItem from './AddItem';
 import PopupFooter from './PopupFooter';
 
 import { PopupContentsProps, Option } from './props';
@@ -35,6 +34,7 @@ const useStyles = makeStyles(theme =>
     },
     hideSearch: {},
     noFooter: {},
+    freeText: {},
 
     paper: { margin: 0 },
     popper: {
@@ -65,6 +65,11 @@ const useStyles = makeStyles(theme =>
       boxSizing: 'border-box',
       minHeight: LISTBOX_MIN_HEIGHT,
       maxHeight: `calc(100vh - 96px - ${SEARCH_AREA_HEIGHT}px - ${FOOTER_HEIGHT}px)`,
+
+      '&$freeText': {
+        maxHeight: `calc(100vh - 96px - ${SEARCH_AREA_HEIGHT}px - ${FOOTER_HEIGHT *
+          2}px)`,
+      },
 
       '&$hideSearch': { minHeight: LISTBOX_MIN_HEIGHT + SEARCH_AREA_HEIGHT },
       '&$noFooter': { minHeight: LISTBOX_MIN_HEIGHT + FOOTER_HEIGHT },
@@ -114,8 +119,6 @@ const useStyles = makeStyles(theme =>
   })
 );
 
-const filter = createFilterOptions<Option<any>>();
-
 export default function PopupContents<T>({
   multiple,
   options,
@@ -138,13 +141,13 @@ export default function PopupContents<T>({
   itemRenderer,
   SearchBoxProps,
   AutocompleteProps,
+  AddButtonProps,
 }: PopupContentsProps<T>) {
   const classes = useStyles();
 
   let searchBoxLabel = '';
   if (searchable) {
-    if (freeText) searchBoxLabel = `Search or Add ${label}`;
-    else searchBoxLabel = `Search ${labelPlural || label}`;
+    searchBoxLabel = `Search ${labelPlural || label}`;
   } else {
     if (multiple) searchBoxLabel = `Select ${labelPlural || label}`;
     else searchBoxLabel = `Select a ${label}`;
@@ -176,27 +179,8 @@ export default function PopupContents<T>({
         // Override filterOptions prop to allow user to add an option
         filterOptions={
           searchable
-            ? // If freeText, show Add value option
-              freeText
-              ? (options, params) => {
-                  const filtered = filter(options, params) as Option<any>[];
-
-                  // Suggest the creation of a new value
-                  if (
-                    params.inputValue !== '' &&
-                    filtered.findIndex(
-                      option => option.value === params.inputValue
-                    ) <= -1
-                  )
-                    filtered.push({
-                      value: params.inputValue,
-                      label: `Add “${params.inputValue}”`,
-                    });
-
-                  return filtered;
-                }
-              : // If searchable but not freeText, use normal filter method
-                ((undefined as unknown) as () => Option<T>[])
+            ? // If searchable, use normal filter method
+              ((undefined as unknown) as () => Option<T>[])
             : // If not searchable, always show all options
               () => options
         }
@@ -224,7 +208,8 @@ export default function PopupContents<T>({
           listbox: clsx(
             classes.listbox,
             !searchable && classes.hideSearch,
-            !multiple && !clearable && classes.noFooter
+            !multiple && !clearable && classes.noFooter,
+            freeText && classes.freeText
           ),
           option: classes.option,
           noOptions: classes.noOptions,
@@ -288,6 +273,15 @@ export default function PopupContents<T>({
         // Prevent search box resetting when out of focus
         clearOnBlur={false}
       />
+
+      {freeText && (
+        <AddItem
+          multiple={multiple}
+          value={value as any}
+          onChange={onChange as any}
+          AddButtonProps={AddButtonProps}
+        />
+      )}
 
       <PopupFooter
         multiple={multiple}
