@@ -68,7 +68,8 @@ export default function AddItem({
         'create-option'
       );
 
-    handleClose();
+    setToAdd('');
+    setTimeout(() => setOpen(false));
   };
 
   return (
