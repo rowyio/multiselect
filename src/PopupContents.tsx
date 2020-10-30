@@ -142,6 +142,7 @@ export default function PopupContents<T>({
   SearchBoxProps,
   AutocompleteProps,
   AddButtonProps,
+  AddDialogProps,
 }: PopupContentsProps<T>) {
   const classes = useStyles();
 
@@ -280,6 +281,7 @@ export default function PopupContents<T>({
           value={value as any}
           onChange={onChange as any}
           AddButtonProps={AddButtonProps}
+          AddDialogProps={AddDialogProps}
         />
       )}
 
