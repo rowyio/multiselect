@@ -9,6 +9,7 @@ import {
   UseAutocompleteSingleProps,
 } from '@material-ui/lab/useAutocomplete';
 import { Option } from './Option';
+import { AddItemProps } from './AddItem';
 
 export type PopupContentsCommonProps<T> = {
   onClose: () => void;
@@ -61,7 +62,9 @@ export type PopupContentsCommonProps<T> = {
    * Override certain props of the “Add New” Button component.
    * [See props here](https://material-ui.com/api/button/)
    */
-  AddButtonProps?: Partial<ButtonProps>;
+  AddButtonProps?: AddItemProps['AddButtonProps'];
+  /** Override certain props of the “Add New” Dialog. */
+  AddDialogProps?: AddItemProps['AddDialogProps'];
 };
 
 // AutocompleteProps that can be overridden from the root MultiSelect props

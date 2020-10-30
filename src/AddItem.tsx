@@ -44,6 +44,7 @@ export default function AddItem({
   value,
   onChange,
   AddButtonProps,
+  AddDialogProps,
 }: AddItemProps) {
   const classes = useStyles();
 
@@ -81,7 +82,7 @@ export default function AddItem({
         onClick={() => setOpen(true)}
         {...AddButtonProps}
       >
-        Add New
+        {AddButtonProps?.children || 'Add New'}
       </Button>
 
       <Dialog
@@ -92,7 +93,9 @@ export default function AddItem({
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle id="form-dialog-title">Add Item to List</DialogTitle>
+        <DialogTitle id="form-dialog-title">
+          {AddDialogProps?.title || 'Add Item to List'}
+        </DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -108,10 +111,10 @@ export default function AddItem({
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Cancel
+            {AddDialogProps?.cancelButtonLabel || 'Cancel'}
           </Button>
           <Button onClick={handleAdd} color="primary">
-            Add
+            {AddDialogProps?.addButtonLabel || 'Add'}
           </Button>
         </DialogActions>
       </Dialog>
