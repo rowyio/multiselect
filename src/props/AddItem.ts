@@ -8,6 +8,7 @@ export type AddItemProps = {
   AddButtonProps?: Partial<ButtonProps>;
   AddDialogProps?: {
     title?: React.ReactNode;
+    textFieldLabel?: React.ReactNode;
     cancelButtonLabel?: React.ReactNode;
     addButtonLabel?: React.ReactNode;
   };

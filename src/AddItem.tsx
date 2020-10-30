@@ -99,7 +99,7 @@ export default function AddItem({
         <DialogContent>
           <TextField
             autoFocus
-            label="New Item"
+            label={AddDialogProps?.textFieldLabel || 'New Item'}
             variant="filled"
             fullWidth
             value={toAdd}
