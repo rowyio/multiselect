@@ -82,7 +82,8 @@ export default function AddItem({
         onClick={() => setOpen(true)}
         {...AddButtonProps}
       >
-        {AddButtonProps?.children || '\u200bAdd New'}
+        {'\u200b'}
+        {AddButtonProps?.children || 'Add New'}
       </Button>
 
       <Dialog
