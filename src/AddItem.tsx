@@ -82,7 +82,7 @@ export default function AddItem({
         onClick={() => setOpen(true)}
         {...AddButtonProps}
       >
-        {AddButtonProps?.children || 'Add New'}
+        {AddButtonProps?.children || '\u200bAdd New'}
       </Button>
 
       <Dialog
