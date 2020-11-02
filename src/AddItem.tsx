@@ -82,7 +82,7 @@ export default function AddItem({
         onClick={() => setOpen(true)}
         {...AddButtonProps}
       >
-        {'\u200b'}
+        <span style={{ textIndent: '-100vw' }}>→</span>
         {AddButtonProps?.children || 'Add New'}
       </Button>
 
