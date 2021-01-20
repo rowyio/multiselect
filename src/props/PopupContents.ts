@@ -1,4 +1,4 @@
-import { TextFieldProps, StandardProps, ButtonProps } from '@material-ui/core';
+import { TextFieldProps, StandardProps } from '@material-ui/core';
 import {
   AutocompleteProps,
   AutocompleteClassKey,
@@ -101,6 +101,7 @@ export type PopupContentsMultipleProps<T> = {
   multiple: true;
   options: Option<T>[];
   value: Option<T>[];
+  max?: number;
   onChange: NonNullable<UseAutocompleteMultipleProps<Option<T>>['onChange']>;
 } & PopupContentsCommonProps<T>;
 
@@ -108,6 +109,7 @@ export type PopupContentsSingleProps<T> = {
   multiple: false;
   options: Option<T>[];
   value: Option<T> | null;
+  max?: undefined;
   onChange: NonNullable<UseAutocompleteSingleProps<Option<T>>['onChange']>;
 } & PopupContentsCommonProps<T>;
 

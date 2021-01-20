@@ -45,6 +45,7 @@ export default function AddItem({
   onChange,
   AddButtonProps,
   AddDialogProps,
+  disabled = false,
 }: AddItemProps) {
   const classes = useStyles();
 
@@ -80,6 +81,7 @@ export default function AddItem({
         color="default"
         classes={classes}
         onClick={() => setOpen(true)}
+        disabled={disabled}
         {...AddButtonProps}
       >
         {'\u200b'}

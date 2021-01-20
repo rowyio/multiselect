@@ -5,6 +5,7 @@ export type AddItemProps = {
   multiple: boolean;
   value: PopupContentsProps<string>['value'];
   onChange: PopupContentsProps<string>['onChange'];
+  disabled?: boolean;
   AddButtonProps?: Partial<ButtonProps>;
   AddDialogProps?: {
     title?: React.ReactNode;

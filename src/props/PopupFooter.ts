@@ -8,4 +8,5 @@ export type PopupFooterProps = {
   countText?: React.ReactNode;
   value: any;
   options: any[];
+  max?: number;
 };
