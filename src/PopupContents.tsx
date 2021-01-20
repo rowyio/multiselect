@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 
 import {
@@ -6,8 +6,10 @@ import {
   createStyles,
   TextField,
   InputAdornment,
+  Typography,
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { AutocompleteChangeReason } from '@material-ui/lab/useAutocomplete';
 
 import SearchIcon from '@material-ui/icons/Search';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
@@ -116,6 +118,9 @@ const useStyles = makeStyles(theme =>
       },
     },
     optionIcon: { margin: theme.spacing(0, 2, 0, -(3 / 8)) },
+    maxSelectCaption: {
+      margin: theme.spacing(2, 2, 0, 2),
+    },
   })
 );
 
@@ -131,6 +136,7 @@ export default function PopupContents<T>({
 
   labelPlural = '',
   label = '',
+  maxSelect,
 
   searchable = true,
   selectAll = true,
@@ -146,6 +152,17 @@ export default function PopupContents<T>({
 }: PopupContentsProps<T>) {
   const classes = useStyles();
 
+  const [selectedValues, setSelectedValues] = useState(
+    Array.isArray(value)
+      ? new Set((value as Option<T>[]).map((item: Option<T>) => item.value))
+      : value === null
+      ? new Set()
+      : new Set([(value as Option<T>).value])
+  );
+  const [disableNewSelect, setDisableNewSelect] = useState(
+    maxSelect ? selectedValues.size >= maxSelect : false
+  );
+
   let searchBoxLabel = '';
   if (searchable) {
     searchBoxLabel = `Search ${labelPlural || label}`;
@@ -155,8 +172,33 @@ export default function PopupContents<T>({
   }
   let SearchBoxIcon = SearchIcon;
 
+  const handleChange = (
+    _: any,
+    newValue: any,
+    reason: AutocompleteChangeReason
+  ) => {
+    onChange(_, newValue, reason);
+    setSelectedValues(
+      new Set(newValue.map((item: { value: T }) => item.value))
+    );
+    if (maxSelect && newValue.length >= maxSelect) {
+      setDisableNewSelect(true);
+    } else if (maxSelect && disableNewSelect) {
+      setDisableNewSelect(false);
+    }
+  };
+
   return (
     <>
+      {maxSelect && (
+        <Typography
+          variant="caption"
+          display="block"
+          className={classes.maxSelectCaption}
+        >
+          {selectedValues.size} of max {maxSelect} selected
+        </Typography>
+      )}
       <Autocomplete
         noOptionsText={`No ${labelPlural || label || 'options'}`}
         renderOption={(option, { selected }) => {
@@ -176,7 +218,15 @@ export default function PopupContents<T>({
             </>
           );
         }}
-        getOptionDisabled={option => !!option.disabled}
+        getOptionDisabled={option => {
+          if (option.disabled) {
+            return true;
+          } else if (disableNewSelect) {
+            return !selectedValues.has(option.value);
+          } else {
+            return false;
+          }
+        }}
         // Override filterOptions prop to allow user to add an option
         filterOptions={
           searchable
@@ -194,8 +244,7 @@ export default function PopupContents<T>({
         multiple={multiple}
         options={options}
         value={value as any}
-        onChange={onChange as any}
-        // onChange={onChange}
+        onChange={handleChange}
         // Cannot set `onClose` here, otherwise tabbing out of search box will
         // cause entire popup to close. This is set in the `handleBlur` prop
         // of the `input` element itself: https://github.com/mui-org/material-ui/blob/master/packages/material-ui-lab/src/useAutocomplete/useAutocomplete.js#L742
@@ -277,9 +326,10 @@ export default function PopupContents<T>({
 
       {freeText && (
         <AddItem
+          disabled={disableNewSelect}
           multiple={multiple}
           value={value as any}
-          onChange={onChange as any}
+          onChange={handleChange}
           AddButtonProps={AddButtonProps}
           AddDialogProps={AddDialogProps}
         />
