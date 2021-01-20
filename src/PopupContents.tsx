@@ -155,9 +155,7 @@ export default function PopupContents<T>({
       ? new Set()
       : new Set([(value as Option<T>).value])
   );
-  const [disableNewSelect, setDisableNewSelect] = useState(
-    max ? selectedValues.size >= max : false
-  );
+  const disableNewSelect = max ? selectedValues.size >= max : false;
 
   let searchBoxLabel = '';
   if (searchable) {
@@ -177,11 +175,6 @@ export default function PopupContents<T>({
     setSelectedValues(
       new Set(newValue.map((item: { value: T }) => item.value))
     );
-    if (max && newValue.length >= max) {
-      setDisableNewSelect(true);
-    } else if (max && disableNewSelect) {
-      setDisableNewSelect(false);
-    }
   };
 
   return (

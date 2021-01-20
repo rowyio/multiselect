@@ -32,7 +32,7 @@ export const Multiple = () => {
       value={value}
       onChange={handleChange}
       disabled={boolean('Disabled', false)}
-      maxSelect={number('Max 3', 3)}
+      max={number('Max 3', 3)}
       searchable={boolean('Searchable', true)}
       freeText={boolean('Free text', false)}
       selectAll={boolean('Select all', true)}
