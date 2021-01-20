@@ -65,7 +65,7 @@ export default function MultiSelect<T = string>({
   value: valueProp,
   onChange,
   label = '',
-  maxSelect,
+  max,
 
   disabled = false,
   multiple = true,
@@ -254,7 +254,7 @@ export default function MultiSelect<T = string>({
           <PopupContents
             multiple={true}
             value={value as Option<T>[]}
-            maxSelect={maxSelect}
+            max={max}
             {...PopupContentsProps}
           />
         ) : (

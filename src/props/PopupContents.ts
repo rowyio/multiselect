@@ -101,7 +101,7 @@ export type PopupContentsMultipleProps<T> = {
   multiple: true;
   options: Option<T>[];
   value: Option<T>[];
-  maxSelect?: number;
+  max?: number;
   onChange: NonNullable<UseAutocompleteMultipleProps<Option<T>>['onChange']>;
 } & PopupContentsCommonProps<T>;
 
@@ -109,7 +109,7 @@ export type PopupContentsSingleProps<T> = {
   multiple: false;
   options: Option<T>[];
   value: Option<T> | null;
-  maxSelect?: null;
+  max?: undefined;
   onChange: NonNullable<UseAutocompleteSingleProps<Option<T>>['onChange']>;
 } & PopupContentsCommonProps<T>;
 

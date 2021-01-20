@@ -6,7 +6,6 @@ import {
   createStyles,
   TextField,
   InputAdornment,
-  Typography,
 } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { AutocompleteChangeReason } from '@material-ui/lab/useAutocomplete';
@@ -118,9 +117,6 @@ const useStyles = makeStyles(theme =>
       },
     },
     optionIcon: { margin: theme.spacing(0, 2, 0, -(3 / 8)) },
-    maxSelectCaption: {
-      margin: theme.spacing(2, 2, 0, 2),
-    },
   })
 );
 
@@ -136,7 +132,7 @@ export default function PopupContents<T>({
 
   labelPlural = '',
   label = '',
-  maxSelect,
+  max,
 
   searchable = true,
   selectAll = true,
@@ -160,7 +156,7 @@ export default function PopupContents<T>({
       : new Set([(value as Option<T>).value])
   );
   const [disableNewSelect, setDisableNewSelect] = useState(
-    maxSelect ? selectedValues.size >= maxSelect : false
+    max ? selectedValues.size >= max : false
   );
 
   let searchBoxLabel = '';
@@ -181,24 +177,15 @@ export default function PopupContents<T>({
     setSelectedValues(
       new Set(newValue.map((item: { value: T }) => item.value))
     );
-    if (maxSelect && newValue.length >= maxSelect) {
+    if (max && newValue.length >= max) {
       setDisableNewSelect(true);
-    } else if (maxSelect && disableNewSelect) {
+    } else if (max && disableNewSelect) {
       setDisableNewSelect(false);
     }
   };
 
   return (
     <>
-      {maxSelect && (
-        <Typography
-          variant="caption"
-          display="block"
-          className={classes.maxSelectCaption}
-        >
-          {selectedValues.size} of max {maxSelect} selected
-        </Typography>
-      )}
       <Autocomplete
         noOptionsText={`No ${labelPlural || label || 'options'}`}
         renderOption={(option, { selected }) => {
@@ -345,6 +332,7 @@ export default function PopupContents<T>({
         countText={countText}
         value={value}
         options={options}
+        max={max}
       />
     </>
   );

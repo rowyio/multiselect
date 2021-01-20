@@ -25,7 +25,7 @@ const App = () => {
         // searchable={false}
         clearable
         // renderOption={option => option.label}
-        maxSelect={3}
+        max={3}
       />
 
       <Grid container spacing={2} style={{ marginTop: 20, marginBottom: 50 }}>

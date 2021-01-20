@@ -44,6 +44,7 @@ export default function PopupFooter({
   countText,
   value,
   options,
+  max,
 }: PopupFooterProps) {
   const classes = useStyles();
 
@@ -69,7 +70,10 @@ export default function PopupFooter({
       >
         <Grid item>
           <Typography variant="button" className={classes.count}>
-            {countText ?? `${value.length} of ${options.length}`}
+            {countText ??
+              `${value.length} of ${options.length}${
+                max ? ', max ' + max : ''
+              }`}
           </Typography>
         </Grid>
         {selectAll ? (

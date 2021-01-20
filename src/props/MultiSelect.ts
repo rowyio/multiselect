@@ -24,7 +24,7 @@ interface MultiSelectCommonProps<T>
   /** Show the backdrop when the dropdown popup is open */
   backdrop?: boolean;
   /** Maximum number of items can be selected */
-  maxSelect?: number;
+  max?: number;
   /** Callback fired when popup opens */
   onOpen?: () => void;
   /** Callback fired when popup closes */
