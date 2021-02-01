@@ -49,17 +49,7 @@ const useStyles = makeStyles(theme =>
       width: `calc(100% - ${theme.spacing(2 * 2)}px)`,
     },
     searchInput: { borderRadius: theme.shape.borderRadius },
-    searchLabel: {
-      paddingRight: theme.spacing(7),
-      width: '100%',
-      boxSizing: 'border-box',
-
-      textOverflow: 'ellipsis',
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
-      lineHeight: 'normal',
-      top: -3,
-    },
+    searchLabel: { top: -3 },
     searchLabelShrink: { paddingRight: 0 },
 
     listbox: {
