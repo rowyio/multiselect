@@ -162,9 +162,12 @@ export default function PopupContents<T>({
     reason: AutocompleteChangeReason
   ) => {
     onChange(_, newValue, reason);
-    setSelectedValues(
-      new Set(newValue.map((item: { value: T }) => item.value))
-    );
+
+    if (Array.isArray(newValue))
+      setSelectedValues(
+        new Set(newValue.map((item: { value: T }) => item.value))
+      );
+    else setSelectedValues(newValue?.value);
   };
 
   return (
