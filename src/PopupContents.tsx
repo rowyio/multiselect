@@ -7,6 +7,7 @@ import {
   TextField,
   InputAdornment,
 } from '@material-ui/core';
+import { fade } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { AutocompleteChangeReason } from '@material-ui/lab/useAutocomplete';
 
@@ -67,6 +68,20 @@ const useStyles = makeStyles(theme =>
       '&$hideSearch$noFooter': {
         minHeight: LISTBOX_MIN_HEIGHT + SEARCH_AREA_HEIGHT + FOOTER_HEIGHT,
       },
+
+      // https://codepen.io/evank/pen/wWbRNO
+      background: `
+        linear-gradient(${fade(theme.palette.background.paper, 0)}, ${
+        theme.palette.background.paper
+      } 50%) 0 100%,
+        linear-gradient(to top, ${theme.palette.divider} 1px, ${fade(
+        theme.palette.divider,
+        0
+      )}) 0 calc(100% - 0.5px)`,
+      backgroundRepeat: 'no-repeat',
+      backgroundColor: 'white',
+      backgroundSize: '100% 3px, 100% 1px',
+      backgroundAttachment: 'local, scroll',
     },
     noOptions: {
       ...theme.typography.button,
