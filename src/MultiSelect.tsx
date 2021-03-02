@@ -220,7 +220,8 @@ export default function MultiSelect<T = string>({
             paper: clsx(
               classes.paper,
               !searchable && classes.hideSearch,
-              !multiple && !clearable && classes.noFooter
+              !multiple && !clearable && classes.noFooter,
+              'MultiSelect-Paper'
             ),
           },
           // Always display the popup below the main select element.
