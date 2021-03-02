@@ -11,8 +11,8 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { AutocompleteChangeReason } from '@material-ui/lab/useAutocomplete';
 
 import SearchIcon from '@material-ui/icons/Search';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlankSharp';
+import CheckBoxIcon from '@material-ui/icons/CheckBoxSharp';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 

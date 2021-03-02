@@ -14,7 +14,7 @@ import {
 import { TransitionProps } from '@material-ui/core/transitions';
 
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import AddBoxIcon from '@material-ui/icons/AddBox';
+import AddBoxIcon from '@material-ui/icons/AddBoxSharp';
 
 import { AddItemProps } from './props';
 
