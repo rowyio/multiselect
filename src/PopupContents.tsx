@@ -54,6 +54,8 @@ const useStyles = makeStyles(theme =>
     searchLabelShrink: { paddingRight: 0 },
 
     listbox: {
+      padding: theme.spacing(2, 0, 0),
+
       boxSizing: 'border-box',
       minHeight: LISTBOX_MIN_HEIGHT,
       maxHeight: `calc(100vh - 96px - ${SEARCH_AREA_HEIGHT}px - ${FOOTER_HEIGHT}px)`,
@@ -120,6 +122,9 @@ const useStyles = makeStyles(theme =>
       '&[aria-selected="true"][data-focus="true"]': {
         backgroundColor: theme.palette.action.hover,
       },
+
+      // Disable dense sizes
+      [theme.breakpoints.up('sm')]: { minHeight: 48 },
     },
     optionIcon: { margin: theme.spacing(0, 2, 0, -(3 / 8)) },
   })
