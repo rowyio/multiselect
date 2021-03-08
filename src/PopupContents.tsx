@@ -7,7 +7,6 @@ import {
   TextField,
   InputAdornment,
 } from '@material-ui/core';
-import { fade } from '@material-ui/core/styles';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { AutocompleteChangeReason } from '@material-ui/lab/useAutocomplete';
 

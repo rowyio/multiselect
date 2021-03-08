@@ -14,7 +14,7 @@ import {
   FOOTER_HEIGHT,
 } from './constants/layout';
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles(() =>
   createStyles({
     paper: {
       minHeight: SEARCH_AREA_HEIGHT + LISTBOX_MIN_HEIGHT + FOOTER_HEIGHT,
