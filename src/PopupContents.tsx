@@ -38,7 +38,6 @@ const useStyles = makeStyles(theme =>
     noFooter: {},
     freeText: {},
 
-    paper: { margin: 0 },
     popper: {
       minWidth: LISTBOX_MIN_WIDTH,
       width: '100% !important',
@@ -55,6 +54,7 @@ const useStyles = makeStyles(theme =>
 
     listbox: {
       padding: theme.spacing(2, 0, 0),
+      borderBottom: `1px solid ${theme.palette.divider}`,
 
       boxSizing: 'border-box',
       minHeight: LISTBOX_MIN_HEIGHT,
@@ -70,20 +70,6 @@ const useStyles = makeStyles(theme =>
       '&$hideSearch$noFooter': {
         minHeight: LISTBOX_MIN_HEIGHT + SEARCH_AREA_HEIGHT + FOOTER_HEIGHT,
       },
-
-      // https://codepen.io/evank/pen/wWbRNO
-      background: `
-        linear-gradient(${fade(theme.palette.background.paper, 0)}, ${
-        theme.palette.background.paper
-      } 50%) 0 100%,
-        linear-gradient(to top, ${theme.palette.divider} 1px, ${fade(
-        theme.palette.divider,
-        0
-      )}) 0 calc(100% - 0.5px)`,
-      backgroundRepeat: 'no-repeat',
-      backgroundColor: 'white',
-      backgroundSize: '100% 3px, 100% 1px',
-      backgroundAttachment: 'local, scroll',
     },
     noOptions: {
       ...theme.typography.button,
@@ -115,6 +101,7 @@ const useStyles = makeStyles(theme =>
         backgroundColor: theme.palette.divider,
         height: 1,
       },
+      '&:last-child::after': { content: 'none' },
 
       // Don’t highlight selected items to prevent confusion on what is focused
       '&[aria-selected="true"]': { backgroundColor: 'transparent' },
@@ -245,7 +232,6 @@ export default function PopupContents<T>({
         // disableCloseOnSelect={!multiple}
         classes={{
           root: clsx(classes.root, !searchable && classes.hideSearch),
-          paper: classes.paper,
           popper: classes.popper,
           popperDisablePortal: classes.popperDisablePortal,
           listbox: clsx(
