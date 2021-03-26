@@ -249,7 +249,6 @@ export default function PopupContents<T>({
           groupLabel: classes.groupLabel,
           ...AutocompleteProps?.classes,
         }}
-        groupBy={option => option.label.charAt(0)}
         // Prevent creation of extra wrapping `div`s
         PaperComponent={FragmentWrapper as any}
         PopperComponent={FragmentWrapper}
