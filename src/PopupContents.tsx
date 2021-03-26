@@ -247,7 +247,6 @@ export default function PopupContents<T>({
           option: classes.option,
           noOptions: classes.noOptions,
           groupLabel: classes.groupLabel,
-          groupUl: classes.groupUl,
           ...AutocompleteProps?.classes,
         }}
         groupBy={option => option.label.charAt(0)}
