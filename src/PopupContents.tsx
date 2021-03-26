@@ -81,8 +81,13 @@ const useStyles = makeStyles(theme =>
       alignItems: 'center',
     },
 
+    groupLabel: { top: theme.spacing(-2) },
+
     option: {
       ...theme.typography.body2,
+
+      // Prevent grouping increasing left padding
+      '&&': { paddingLeft: theme.spacing(2) },
 
       position: 'relative',
       marginBottom: 1,
@@ -241,8 +246,11 @@ export default function PopupContents<T>({
           ),
           option: classes.option,
           noOptions: classes.noOptions,
+          groupLabel: classes.groupLabel,
+          groupUl: classes.groupUl,
           ...AutocompleteProps?.classes,
         }}
+        groupBy={option => option.label.charAt(0)}
         // Prevent creation of extra wrapping `div`s
         PaperComponent={FragmentWrapper as any}
         PopperComponent={FragmentWrapper}
