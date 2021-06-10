@@ -3,9 +3,9 @@
 A component to select multiple items from a list of options using the
 [Material-UI Autocomplete component](https://material-ui.com/components/autocomplete/).
 
-[![Storybook badge](https://raw.githubusercontent.com/storybookjs/brand/master/badge/badge-storybook.svg)](https://antlervc.github.io/multiselect)
+[![Storybook badge](https://raw.githubusercontent.com/storybookjs/brand/master/badge/badge-storybook.svg)](https://antler-vc.github.io/multiselect)
 
-[**Full documentation with props**](https://antlervc.github.io/multiselect?path=/docs/multiselect--multiple)
+[**Full documentation with props**](https://antler-vc.github.io/multiselect?path=/docs/multiselect--multiple)
 
 ## Quick start
 
