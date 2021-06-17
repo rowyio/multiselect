@@ -5,4 +5,5 @@ export type Option<T> = {
   value: T;
   label: string;
   disabled?: boolean;
+  [key: string]: any;
 };
