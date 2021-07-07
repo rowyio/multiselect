@@ -1,69 +1,72 @@
 import React, { useState } from 'react';
-import { withKnobs, boolean, text, number } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
+
+import { createTheme, ThemeProvider } from '@material-ui/core';
 
 import MultiSelect from '../src';
 import { top100Films } from './data';
+
+const theme = createTheme();
 
 export default {
   title: 'MultiSelect',
   component: MultiSelect,
   decorators: [
-    withKnobs,
-    storyFn => (
-      <div style={{ maxWidth: 600, margin: '40px auto' }}>{storyFn()}</div>
+    (storyFn) => (
+      <ThemeProvider theme={theme}>
+        <div style={{ maxWidth: 600, margin: '40px auto' }}>{storyFn()}</div>
+      </ThemeProvider>
     ),
   ],
+  args: {
+    label: 'Movie',
+    labelPlural: 'Movies',
+    empty: false,
+    options: top100Films,
+    disabled: false,
+    searchable: true,
+    freeText: false,
+    selectAll: true,
+    clearable: true,
+  },
 };
 
-export const Multiple = () => {
+export const Multiple = (args) => {
   const [value, setValue] = useState<string[]>(['The Godfather']);
 
   const handleChange = (value, reason) => {
     setValue(value);
-    action('Value cahgned')(value, reason);
+    action('Value changed')(value, reason);
   };
 
   return (
     <MultiSelect
-      label={text('Label', 'Movie')}
-      labelPlural={text('Label plural', 'Movies')}
-      options={boolean('Empty', false) ? [] : top100Films}
+      {...args}
+      options={args.empty ? [] : args.options}
       value={value}
       onChange={handleChange}
-      disabled={boolean('Disabled', false)}
-      max={number('Max 3', 3)}
-      searchable={boolean('Searchable', true)}
-      freeText={boolean('Free text', false)}
-      selectAll={boolean('Select all', true)}
-      clearable={boolean('Clearable', true)}
       onOpen={action('Opened')}
       onClose={action('Closed')}
     />
   );
 };
+Multiple.args = { max: 3 };
 
-export const Single = () => {
+export const Single = (args) => {
   const [value, setValue] = useState<string>('The Godfather');
 
   const handleChange = (value, reason) => {
     setValue(value);
-    action('Value cahgned')(value, reason);
+    action('Value changed')(value, reason);
   };
 
   return (
     <MultiSelect
-      label={text('Label', 'Movie')}
-      labelPlural={text('Label plural', 'Movies')}
-      options={boolean('Empty', false) ? [] : top100Films}
+      {...args}
+      options={args.empty ? [] : args.options}
       multiple={false}
       value={value}
       onChange={handleChange}
-      disabled={boolean('Disabled', false)}
-      searchable={boolean('Searchable', true)}
-      freeText={boolean('Free text', false)}
-      selectAll={boolean('Select all', true)}
-      clearable={boolean('Clearable', true)}
       onOpen={action('Opened')}
       onClose={action('Closed')}
     />

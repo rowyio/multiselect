@@ -1,17 +1,12 @@
 import React from 'react';
 
-import {
-  makeStyles,
-  createStyles,
-  Grid,
-  Typography,
-  Button,
-} from '@material-ui/core';
+import { makeStyles, createStyles } from '@material-ui/styles';
+import { Grid, Typography, Button } from '@material-ui/core';
 
 import { PopupFooterProps } from './props';
 import { FOOTER_HEIGHT } from './constants/layout';
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
       width: '100%',
@@ -65,7 +60,7 @@ export default function PopupFooter({
         container
         spacing={2}
         className={classes.root}
-        justify="space-between"
+        justifyContent="space-between"
         alignItems="center"
       >
         <Grid item>
@@ -113,7 +108,7 @@ export default function PopupFooter({
         container
         spacing={2}
         className={classes.root}
-        justify="space-between"
+        justifyContent="space-between"
         alignItems="center"
       >
         <Grid item>{clearButton}</Grid>

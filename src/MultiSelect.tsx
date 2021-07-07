@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
-import { makeStyles, createStyles, TextField } from '@material-ui/core';
+import { makeStyles, createStyles } from '@material-ui/styles';
+import { TextField, AutocompleteChangeReason } from '@material-ui/core';
 
 import PopupContents from './PopupContents';
 import FragmentWrapper from './FragmentWrapper';
 
 import { MultiSelectProps, Option } from './props';
-import { AutocompleteChangeReason } from '@material-ui/lab/useAutocomplete';
 import {
   SEARCH_AREA_HEIGHT,
   LISTBOX_MIN_HEIGHT,
@@ -101,7 +101,7 @@ export default function MultiSelect<T = string>({
 
   // Transform `option` prop if it’s just strings
   const options = (typeof optionsProp[0] === 'string'
-    ? (optionsProp as string[]).map(item => ({ label: item, value: item }))
+    ? (optionsProp as string[]).map((item) => ({ label: item, value: item }))
     : optionsProp) as Option<T>[];
 
   // Transform `value` to `Option` type
@@ -109,17 +109,17 @@ export default function MultiSelect<T = string>({
   if (multiple) {
     value = (valueProp as T[])
       .map(
-        item =>
-          options.find(option => option.value === item) ?? {
+        (item) =>
+          options.find((option) => option.value === item) ?? {
             label: item,
             value: item,
           }
       )
-      .filter(item => item !== undefined) as Option<T>[];
+      .filter((item) => item !== undefined) as Option<T>[];
   } else {
     if (!valueProp || ((valueProp as unknown) as string) === '') value = null;
     else
-      value = options.find(option => option.value === valueProp) ?? {
+      value = options.find((option) => option.value === valueProp) ?? {
         label: (valueProp as unknown) as string,
         value: valueProp as T,
       };
@@ -132,13 +132,13 @@ export default function MultiSelect<T = string>({
       const valueArray = value as Option<T>[];
       for (let i = valueArray.length - 1; i >= 0; i--) {
         const item = valueArray[i];
-        if (options.findIndex(option => option.value === item.value) <= -1)
+        if (options.findIndex((option) => option.value === item.value) <= -1)
           options.unshift(item);
       }
     } else if (value !== null && !!(value as Option<T>).value) {
       if (
         options.findIndex(
-          option => option.value === (value as Option<T>).value
+          (option) => option.value === (value as Option<T>).value
         ) <= -1
       )
         options.unshift(value as Option<T>);
@@ -162,9 +162,9 @@ export default function MultiSelect<T = string>({
   };
 
   const handleSelectAll = () =>
-    onChange(options.map(item => item.value) as any, 'select-option');
+    onChange(options.map((item) => item.value) as any, 'selectOption');
   const handleClear = () =>
-    onChange((multiple ? [] : null) as any, 'remove-option');
+    onChange((multiple ? [] : null) as any, 'removeOption');
 
   // Must declare props to pass to PopupContents here so they to use `as any`
   // keyword to appease TypeScript
@@ -200,7 +200,7 @@ export default function MultiSelect<T = string>({
         open,
         onOpen: handleOpen,
         onClose: handleClose,
-        renderValue: _ => {
+        renderValue: (_) => {
           if (Array.isArray(value)) {
             if (value.length === 1) return value[0].label;
             if (value.length > 1)

@@ -26,11 +26,10 @@
     "build-storybook": "build-storybook"
   },
   "peerDependencies": {
-    "@material-ui/core": "^4.11.4",
-    "@material-ui/icons": "^4.11.2",
-    "@material-ui/lab": "^4.0.0-alpha.58",
-    "clsx": "^1.0.4",
-    "react": "^16.8.0"
+    "@material-ui/core": "^5.0.0-beta.0",
+    "@material-ui/icons": "^5.0.0-beta.0",
+    "@material-ui/styles": "^5.0.0-beta.0",
+    "react": "^17"
   },
   "husky": {
     "hooks": {
@@ -45,31 +44,32 @@
     "proseWrap": "always"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.6",
-    "@material-ui/core": "^4.11.4",
-    "@material-ui/icons": "^4.11.2",
-    "@material-ui/lab": "^4.0.0-alpha.58",
-    "@storybook/addon-actions": "6.2.9",
-    "@storybook/addon-docs": "6.2.9",
+    "@babel/core": "^7.14.6",
+    "@emotion/react": "^11.4.0",
+    "@emotion/styled": "^11.3.0",
+    "@material-ui/core": "^5.0.0-beta.0",
+    "@material-ui/icons": "^5.0.0-beta.0",
+    "@material-ui/styles": "^5.0.0-beta.0",
+    "@storybook/addon-actions": "6.3.2",
+    "@storybook/addon-docs": "6.3.2",
     "@storybook/addon-info": "5.3.21",
-    "@storybook/addon-knobs": "6.2.9",
-    "@storybook/addon-links": "6.2.9",
-    "@storybook/addon-storysource": "6.2.9",
-    "@storybook/addons": "6.2.9",
-    "@storybook/react": "6.2.9",
-    "@types/react": "^16.9.34",
-    "@types/react-dom": "^16.9.7",
-    "babel-loader": "^8.1.0",
-    "dompurify": "2.2.9",
+    "@storybook/addon-links": "6.3.2",
+    "@storybook/addon-storysource": "6.3.2",
+    "@storybook/addons": "6.3.2",
+    "@storybook/react": "6.3.2",
+    "@types/react": "^17.0.13",
+    "@types/react-dom": "^17.0.8",
+    "babel-loader": "^8.2.2",
+    "dompurify": "2.3.0",
     "husky": "^4",
-    "react": "^16.13.1",
-    "react-div-100vh": "^0.3.8",
+    "react": "^17.0.2",
+    "react-div-100vh": "^0.6.0",
     "react-docgen-typescript-loader": "^3.7.2",
-    "react-dom": "^16.13.1",
-    "react-is": "^16.13.1",
+    "react-dom": "^17.0.2",
+    "react-is": "^17.0.2",
     "ts-loader": "9.2.3",
     "tsdx": "0.14.1",
     "tslib": "2.3.0",
-    "typescript": "4.3.2"
+    "typescript": "4.3.5"
   }
 }

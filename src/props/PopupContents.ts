@@ -1,8 +1,9 @@
-import { TextFieldProps, StandardProps } from '@material-ui/core';
 import {
+  TextFieldProps,
+  StandardProps,
   AutocompleteProps,
   AutocompleteClassKey,
-} from '@material-ui/lab/Autocomplete';
+} from '@material-ui/core';
 import { Option } from './Option';
 import { AddItemProps } from './AddItem';
 
@@ -56,8 +57,13 @@ export type PopupContentsCommonProps<T> = {
 };
 
 // AutocompleteProps that can be overridden from the root MultiSelect props
-type ExposedAutocompleteProps<T,Multiple extends boolean|undefined,DisableClearable extends boolean|undefined,FreeSolo extends boolean|undefined> = Omit<
-  AutocompleteProps<Option<T>,Multiple,DisableClearable,FreeSolo>,
+type ExposedAutocompleteProps<
+  T,
+  Multiple extends boolean | undefined,
+  DisableClearable extends boolean | undefined,
+  FreeSolo extends boolean | undefined
+> = Omit<
+  AutocompleteProps<Option<T>, Multiple, DisableClearable, FreeSolo>,
   | keyof StandardProps<
       React.HTMLAttributes<HTMLDivElement>,
       AutocompleteClassKey,
@@ -79,19 +85,19 @@ type ExposedAutocompleteProps<T,Multiple extends boolean|undefined,DisableCleara
   | 'openOnFocus'
 > & { classes: Partial<Record<AutocompleteClassKey, string>> };
 
-
 export type PopupContentsMultipleProps<T> = {
   multiple: true;
   options: Option<T>[];
   value: Option<T>[];
   max?: number;
-  onChange: NonNullable<AutocompleteProps<Option<T>, true, false, true>['onChange']>;
+  onChange: NonNullable<
+    AutocompleteProps<Option<T>, true, false, true>['onChange']
+  >;
   /**
    * Override certain props of the Autocomplete component.
    * [See props here](https://material-ui.com/api/autocomplete/)
    */
-  AutocompleteProps?: Partial< ExposedAutocompleteProps<T, true, false, true>
-  >;
+  AutocompleteProps?: Partial<ExposedAutocompleteProps<T, true, false, true>>;
 } & PopupContentsCommonProps<T>;
 
 export type PopupContentsSingleProps<T> = {
@@ -99,13 +105,14 @@ export type PopupContentsSingleProps<T> = {
   options: Option<T>[];
   value: Option<T> | null;
   max?: undefined;
-  onChange: NonNullable<AutocompleteProps<Option<T>, false, false, true>['onChange']>;
+  onChange: NonNullable<
+    AutocompleteProps<Option<T>, false, false, true>['onChange']
+  >;
   /**
    * Override certain props of the Autocomplete component.
    * [See props here](https://material-ui.com/api/autocomplete/)
    */
-  AutocompleteProps?: Partial< ExposedAutocompleteProps<T, false, false, true>
-  >;
+  AutocompleteProps?: Partial<ExposedAutocompleteProps<T, false, false, true>>;
 } & PopupContentsCommonProps<T>;
 
 // Explicitly separate type intersections based off `multiple` prop

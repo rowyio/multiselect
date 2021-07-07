@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
+import { makeStyles, createStyles } from '@material-ui/styles';
 import {
-  makeStyles,
-  createStyles,
   Button,
   Dialog,
   Grow,
@@ -14,7 +13,7 @@ import {
 import { TransitionProps } from '@material-ui/core/transitions';
 
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import AddBoxIcon from '@material-ui/icons/AddBoxSharp';
+import AddBoxIcon from '@material-ui/icons/AddBox';
 
 import { AddItemProps } from './props';
 
@@ -25,7 +24,7 @@ const Transition = React.forwardRef(function Transition(
   return <Grow ref={ref} {...props} />;
 });
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     root: { margin: theme.spacing(0.75) },
 
@@ -61,13 +60,13 @@ export default function AddItem({
           ...((Array.isArray(value) ? value : []) as any),
           { value: toAdd, label: toAdd },
         ] as any,
-        'create-option'
+        'createOption'
       );
     else
       onChange(
         {} as any,
         { value: toAdd, label: toAdd } as any,
-        'create-option'
+        'createOption'
       );
 
     setToAdd('');
@@ -78,7 +77,7 @@ export default function AddItem({
     <>
       <Button
         startIcon={multiple ? <AddBoxIcon /> : <AddCircleIcon />}
-        color="default"
+        color="secondary"
         classes={classes}
         onClick={() => setOpen(true)}
         disabled={disabled}
@@ -106,8 +105,8 @@ export default function AddItem({
             variant="filled"
             fullWidth
             value={toAdd}
-            onChange={e => setToAdd(e.target.value)}
-            onKeyDown={e => {
+            onChange={(e) => setToAdd(e.target.value)}
+            onKeyDown={(e) => {
               if (e.key === 'Enter') handleAdd();
             }}
           />

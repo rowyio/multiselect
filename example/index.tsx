@@ -3,8 +3,13 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import './style.css';
-import { Container, Grid, Chip } from '@material-ui/core';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Chip from '@material-ui/core/Chip';
 import MultiSelect from '../.';
+
+const theme = createTheme();
 
 const App = () => {
   const [value, setValue] = React.useState<string[]>(['The Godfather']);
@@ -13,42 +18,44 @@ const App = () => {
   console.log(singleValue);
 
   return (
-    <Container>
-      <MultiSelect
-        options={top100Films}
-        value={value}
-        onChange={setValue}
-        label="Movie MovieMovieMovieMovieMovieMovieMovieMovieMovie"
-        labelPlural="Movies"
-        selectAll={false}
-        freeText
-        // searchable={false}
-        clearable
-        // renderOption={option => option.label}
-        max={3}
-      />
+    <ThemeProvider theme={theme}>
+      <Container>
+        <MultiSelect
+          options={top100Films}
+          value={value}
+          onChange={setValue}
+          label="Movie MovieMovieMovieMovieMovieMovieMovieMovieMovie"
+          labelPlural="Movies"
+          selectAll={false}
+          freeText
+          // searchable={false}
+          clearable
+          // renderOption={option => option.label}
+          max={3}
+        />
 
-      <Grid container spacing={2} style={{ marginTop: 20, marginBottom: 50 }}>
-        {value.map(x => (
-          <Grid item key={x}>
-            <Chip label={x} />
-          </Grid>
-        ))}
-      </Grid>
+        <Grid container spacing={2} style={{ marginTop: 20, marginBottom: 50 }}>
+          {value.map((x) => (
+            <Grid item key={x}>
+              <Chip label={x} />
+            </Grid>
+          ))}
+        </Grid>
 
-      <MultiSelect
-        options={top100Films}
-        value={singleValue}
-        onChange={setSingleValue}
-        label="Movie"
-        labelPlural="Movies"
-        selectAll={false}
-        freeText
-        searchable={false}
-        multiple={false}
-        // clearable
-      />
-    </Container>
+        <MultiSelect
+          options={top100Films}
+          value={singleValue}
+          onChange={setSingleValue}
+          label="Movie"
+          labelPlural="Movies"
+          selectAll={false}
+          freeText
+          searchable={false}
+          multiple={false}
+          // clearable
+        />
+      </Container>
+    </ThemeProvider>
   );
 };
 

@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
+import { makeStyles, createStyles } from '@material-ui/styles';
 import {
-  makeStyles,
-  createStyles,
   TextField,
   InputAdornment,
+  Autocomplete,
+  AutocompleteChangeReason,
 } from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { AutocompleteChangeReason } from '@material-ui/lab/useAutocomplete';
 
 import SearchIcon from '@material-ui/icons/Search';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlankSharp';
-import CheckBoxIcon from '@material-ui/icons/CheckBoxSharp';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 
@@ -28,7 +27,7 @@ import {
   FOOTER_HEIGHT,
 } from './constants/layout';
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
       '&$hideSearch': { marginTop: -SEARCH_AREA_HEIGHT },
@@ -48,8 +47,6 @@ const useStyles = makeStyles(theme =>
       width: `calc(100% - ${theme.spacing(2 * 2)}px)`,
     },
     searchInput: { borderRadius: theme.shape.borderRadius },
-    searchLabel: { top: -3 },
-    searchLabelShrink: { paddingRight: 0 },
 
     listbox: {
       padding: theme.spacing(2, 0, 0),
@@ -60,8 +57,9 @@ const useStyles = makeStyles(theme =>
       maxHeight: `calc(100vh - 96px - ${SEARCH_AREA_HEIGHT}px - ${FOOTER_HEIGHT}px)`,
 
       '&$freeText': {
-        maxHeight: `calc(100vh - 96px - ${SEARCH_AREA_HEIGHT}px - ${FOOTER_HEIGHT *
-          2}px)`,
+        maxHeight: `calc(100vh - 96px - ${SEARCH_AREA_HEIGHT}px - ${
+          FOOTER_HEIGHT * 2
+        }px)`,
       },
 
       '&$hideSearch': { minHeight: LISTBOX_MIN_HEIGHT + SEARCH_AREA_HEIGHT },
@@ -110,7 +108,7 @@ const useStyles = makeStyles(theme =>
       // Don’t highlight selected items to prevent confusion on what is focused
       '&[aria-selected="true"]': { backgroundColor: 'transparent' },
       // Undo this override when the item is focused
-      '&[aria-selected="true"][data-focus="true"]': {
+      '&[aria-selected="true"].Mui-focused': {
         backgroundColor: theme.palette.action.hover,
       },
 
@@ -121,6 +119,7 @@ const useStyles = makeStyles(theme =>
   })
 );
 
+// TODO: Rewrite with useAutocomplete instead
 export default function PopupContents<T>({
   multiple,
   options,
@@ -185,7 +184,7 @@ export default function PopupContents<T>({
     <>
       <Autocomplete
         noOptionsText={`No ${labelPlural || label || 'options'}`}
-        renderOption={(option, { selected }) => {
+        renderOption={(props, option, { selected }) => {
           let Icon: typeof CheckBoxIcon = CheckBoxOutlineBlankIcon;
           if (multiple) {
             if (selected) Icon = CheckBoxIcon;
@@ -196,13 +195,13 @@ export default function PopupContents<T>({
           }
 
           return (
-            <>
+            <li {...props}>
               <Icon className={classes.optionIcon} />
               {itemRenderer ? itemRenderer(option, selected) : option.label}
-            </>
+            </li>
           );
         }}
-        getOptionDisabled={option => {
+        getOptionDisabled={(option) => {
           if (option.disabled) {
             return true;
           } else if (disableNewSelect) {
@@ -251,26 +250,32 @@ export default function PopupContents<T>({
         }}
         // Prevent creation of extra wrapping `div`s
         PaperComponent={FragmentWrapper as any}
-        PopperComponent={FragmentWrapper}
+        PopperComponent={FragmentWrapper as any}
         // Prevent search box from rendering the selected items
         renderTags={() => null}
-        getOptionLabel={option => option.label}
-        getOptionSelected={(option, value) => option.value === value.value}
+        getOptionLabel={(option) => option.label}
+        isOptionEqualToValue={(option, value) => option.value === value.value}
         // Render search box
-        renderInput={params => (
+        renderInput={(params) => (
           <TextField
             {...params}
             autoFocus
-            onKeyDown={e => {
+            onKeyDown={(e) => {
               // Escape key: close popup. Must be handled here since we cannot
               // pass the `onClose` prop to the root Autocomplete component.
               if (e.key === 'Escape') onClose();
             }}
             variant="filled"
-            margin="dense"
-            label={searchBoxLabel}
-            className={classes.search}
+            type="search"
+            hiddenLabel
+            placeholder={searchBoxLabel}
+            aria-label={searchBoxLabel}
+            // className={classes.search}
             {...(SearchBoxProps as any)}
+            classes={{
+              root: classes.search,
+              input: classes.searchInput,
+            }}
             ref={params.InputProps.ref}
             inputProps={
               searchable
@@ -283,10 +288,11 @@ export default function PopupContents<T>({
                   }
             }
             InputProps={{
+              hiddenLabel: true,
               disableUnderline: true,
-              classes: { root: classes.searchInput },
-              endAdornment: (
-                <InputAdornment position="end">
+              //classes: { root: classes.searchInput },
+              startAdornment: (
+                <InputAdornment position="start">
                   <SearchBoxIcon
                     color="action"
                     style={{ pointerEvents: 'none' }}
@@ -295,13 +301,13 @@ export default function PopupContents<T>({
               ),
               ...SearchBoxProps?.InputProps,
             }}
-            InputLabelProps={{
-              classes: {
-                root: classes.searchLabel,
-                shrink: classes.searchLabelShrink,
-              },
-              ...SearchBoxProps?.InputLabelProps,
-            }}
+            // InputLabelProps={{
+            //   classes: {
+            //     root: classes.searchLabel,
+            //     shrink: classes.searchLabelShrink,
+            //   },
+            //   ...SearchBoxProps?.InputLabelProps,
+            // }}
           />
         )}
         // Prevent search box resetting when out of focus

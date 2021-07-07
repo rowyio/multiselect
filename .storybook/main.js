@@ -1,13 +1,12 @@
 module.exports = {
-  stories: ['../stories/**/*.stories.(ts|tsx)'],
+  stories: ['../stories/**/*.stories.@(ts|tsx)'],
   addons: [
-    '@storybook/addon-knobs/register',
     '@storybook/addon-actions',
     '@storybook/addon-links',
     '@storybook/addon-docs',
     { name: '@storybook/addon-storysource', parser: 'typescript' },
   ],
-  webpackFinal: async config => {
+  webpackFinal: async (config) => {
     config.module.rules.push({
       test: /\.(ts|tsx)$/,
       use: [
