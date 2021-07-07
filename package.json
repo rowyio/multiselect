@@ -19,7 +19,6 @@
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
-    "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint",
     "prepare": "tsdx build; build-storybook -c .storybook -o docs; git add docs",
     "storybook": "start-storybook -p 6006",
