@@ -44,7 +44,6 @@ const useStyles = makeStyles((theme) =>
 
     search: {
       padding: theme.spacing(1, 1, 0),
-      width: `calc(100% - ${theme.spacing(1 * 2)})`,
     },
     searchInput: {
       borderRadius: theme.shape.borderRadius,
