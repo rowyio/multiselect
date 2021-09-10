@@ -1,11 +1,11 @@
-# MultiSelect [![npm latest release](https://badgen.net/npm/v/@antlerengineering/multiselect)](https://www.npmjs.com/@antlerengineering/multiselect) [![Minified size](https://badgen.net/bundlephobia/min/@antlerengineering/multiselect)](https://bundlephobia.com/result?p=@antlerengineering/multiselect)
+# MultiSelect [![npm latest release](https://badgen.net/npm/v/@rowy/multiselect)](https://www.npmjs.com/@rowy/multiselect) [![Minified size](https://badgen.net/bundlephobia/min/@rowy/multiselect)](https://bundlephobia.com/result?p=@rowy/multiselect)
 
 A component to select multiple items from a list of options using the
 [Material-UI Autocomplete component](https://material-ui.com/components/autocomplete/).
 
-[![Storybook badge](https://raw.githubusercontent.com/storybookjs/brand/master/badge/badge-storybook.svg)](https://antler-vc.github.io/multiselect)
+[![Storybook badge](https://raw.githubusercontent.com/storybookjs/brand/master/badge/badge-storybook.svg)](https://rowyio.github.io/multiselect)
 
-[**Full documentation with props**](https://antler-vc.github.io/multiselect?path=/docs/multiselect--multiple)
+[**Full documentation with props**](https://rowyio.github.io/multiselect?path=/docs/multiselect--multiple)
 
 ## Quick start
 

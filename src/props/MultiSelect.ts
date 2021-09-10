@@ -1,4 +1,4 @@
-import { TextFieldProps, AutocompleteChangeReason } from '@material-ui/core';
+import { TextFieldProps, AutocompleteChangeReason } from '@mui/material';
 import { Option } from './Option';
 import { PopupContentsCommonProps } from './PopupContents';
 

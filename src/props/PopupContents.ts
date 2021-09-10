@@ -3,7 +3,7 @@ import {
   StandardProps,
   AutocompleteProps,
   AutocompleteClassKey,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Option } from './Option';
 import { AddItemProps } from './AddItem';
 

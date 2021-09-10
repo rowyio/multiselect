@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { makeStyles, createStyles } from '@material-ui/styles';
+import { makeStyles, createStyles } from '@mui/styles';
 import {
   Button,
   Dialog,
@@ -9,11 +9,11 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-} from '@material-ui/core';
-import { TransitionProps } from '@material-ui/core/transitions';
+} from '@mui/material';
+import { TransitionProps } from '@mui/material/transitions';
 
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import AddBoxIcon from '@material-ui/icons/AddBox';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 import { AddItemProps } from './props';
 

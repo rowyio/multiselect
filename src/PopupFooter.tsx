@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { makeStyles, createStyles } from '@material-ui/styles';
-import { Grid, Typography, Button } from '@material-ui/core';
+import { makeStyles, createStyles } from '@mui/styles';
+import { Grid, Typography, Button } from '@mui/material';
 
 import { PopupFooterProps } from './props';
 import { FOOTER_HEIGHT } from './constants/layout';

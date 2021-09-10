@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
-import { makeStyles, createStyles } from '@material-ui/styles';
-import { TextField, AutocompleteChangeReason } from '@material-ui/core';
+import { makeStyles, createStyles } from '@mui/styles';
+import { TextField, AutocompleteChangeReason } from '@mui/material';
 
 import PopupContents from './PopupContents';
 import FragmentWrapper from './FragmentWrapper';

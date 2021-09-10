@@ -1,5 +1,5 @@
 import { PopupContentsProps } from './PopupContents';
-import { ButtonProps } from '@material-ui/core';
+import { ButtonProps } from '@mui/material';
 
 export type AddItemProps = {
   multiple: boolean;
