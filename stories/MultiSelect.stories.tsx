@@ -1,21 +1,42 @@
 import React, { useState } from 'react';
 import { action } from '@storybook/addon-actions';
 
-import { createTheme, ThemeProvider } from '@mui/material';
+import {
+  StyledEngineProvider,
+  createTheme,
+  ThemeProvider,
+} from '@mui/material';
 
 import MultiSelect from '../src';
 import { top100Films } from './data';
 
-const theme = createTheme();
+const theme = createTheme({
+  components: {
+    MuiTextField: {
+      defeaultProps: {
+        variant: 'filled',
+        size: 'small',
+      },
+    },
+    MuiButton: {
+      defaultProps: {
+        variant: 'outlined',
+        color: 'secondary',
+      },
+    },
+  },
+});
 
 export default {
   title: 'MultiSelect',
   component: MultiSelect,
   decorators: [
     (storyFn) => (
-      <ThemeProvider theme={theme}>
-        <div style={{ maxWidth: 600, margin: '40px auto' }}>{storyFn()}</div>
-      </ThemeProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
+          <div style={{ maxWidth: 600, margin: '40px auto' }}>{storyFn()}</div>
+        </ThemeProvider>
+      </StyledEngineProvider>
     ),
   ],
   args: {

@@ -43,13 +43,18 @@ const useStyles = makeStyles((theme) =>
     popperDisablePortal: { position: 'relative' },
 
     search: {
-      margin: theme.spacing(2, 2, 0),
-      width: `calc(100% - ${theme.spacing(2 * 2)}px)`,
+      padding: theme.spacing(1, 1, 0),
+      width: `calc(100% - ${theme.spacing(1 * 2)})`,
     },
-    searchInput: { borderRadius: theme.shape.borderRadius },
+    searchInput: {
+      borderRadius: theme.shape.borderRadius,
+      padding: theme.spacing(0.75, 0.5) + ' !important',
+      height: 32,
+      ...theme.typography.body2,
+    },
 
     listbox: {
-      padding: theme.spacing(2, 0, 0),
+      padding: theme.spacing(1, 0, 0),
       borderBottom: `1px solid ${theme.palette.divider}`,
 
       boxSizing: 'border-box',
@@ -270,12 +275,9 @@ export default function PopupContents<T>({
             hiddenLabel
             placeholder={searchBoxLabel}
             aria-label={searchBoxLabel}
-            // className={classes.search}
+            size="small"
+            className={classes.search}
             {...(SearchBoxProps as any)}
-            classes={{
-              root: classes.search,
-              input: classes.searchInput,
-            }}
             ref={params.InputProps.ref}
             inputProps={
               searchable
@@ -290,7 +292,7 @@ export default function PopupContents<T>({
             InputProps={{
               hiddenLabel: true,
               disableUnderline: true,
-              //classes: { root: classes.searchInput },
+              classes: { root: classes.searchInput },
               startAdornment: (
                 <InputAdornment position="start">
                   <SearchBoxIcon

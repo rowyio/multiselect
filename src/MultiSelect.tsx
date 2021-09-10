@@ -239,6 +239,7 @@ export default function MultiSelect<T = string>({
           MenuListProps: {
             disablePadding: true,
             component: 'div',
+            style: { padding: 0 },
             ...TextFieldProps?.SelectProps?.MenuProps?.MenuListProps,
             autoFocus: false,
             // Remove listbox role. This is created in the Autocomplete listbox.

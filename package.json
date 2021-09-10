@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.0.0",
   "license": "MIT",
   "name": "@rowy/multiselect",
   "publishConfig": {
@@ -19,7 +19,6 @@
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
-    "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint",
     "prepare": "tsdx build; build-storybook -c .storybook -o docs; git add docs",
     "size": "size-limit",
