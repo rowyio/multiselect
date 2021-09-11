@@ -119,7 +119,7 @@ const useStyles = makeStyles((theme) =>
       // Disable dense sizes
       [theme.breakpoints.up('sm')]: { minHeight: 48 },
     },
-    optionIcon: { margin: theme.spacing(0, 2, 0, -(3 / 8)) },
+    optionIcon: { margin: theme.spacing(0, 2, 0, -0.5) },
   })
 );
 
