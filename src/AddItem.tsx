@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) =>
     root: { margin: theme.spacing(0.75) },
 
     startIcon: {
-      marginLeft: theme.spacing(-0.5),
+      marginLeft: theme.spacing(-0.25),
       marginRight: theme.spacing(2),
     },
     iconSizeMedium: {
