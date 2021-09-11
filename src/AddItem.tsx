@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) =>
     root: { margin: theme.spacing(0.75) },
 
     startIcon: {
-      marginLeft: -1,
+      marginLeft: theme.spacing(-0.5),
       marginRight: theme.spacing(2),
     },
     iconSizeMedium: {
@@ -78,6 +78,7 @@ export default function AddItem({
       <Button
         startIcon={multiple ? <AddBoxIcon /> : <AddCircleIcon />}
         color="secondary"
+        variant="text"
         classes={classes}
         onClick={() => setOpen(true)}
         disabled={disabled}
@@ -112,10 +113,10 @@ export default function AddItem({
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose}>
             {AddDialogProps?.cancelButtonLabel || 'Cancel'}
           </Button>
-          <Button onClick={handleAdd} color="primary">
+          <Button onClick={handleAdd} color="primary" variant="contained">
             {AddDialogProps?.addButtonLabel || 'Add'}
           </Button>
         </DialogActions>

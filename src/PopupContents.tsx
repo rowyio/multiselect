@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) =>
     },
 
     listbox: {
-      padding: theme.spacing(1, 0, 0),
+      padding: theme.spacing(1, 0),
       borderBottom: `1px solid ${theme.palette.divider}`,
 
       boxSizing: 'border-box',
@@ -296,7 +296,7 @@ export default function PopupContents<T>({
                 <InputAdornment position="start">
                   <SearchBoxIcon
                     color="action"
-                    style={{ pointerEvents: 'none' }}
+                    sx={{ pointerEvents: 'none', mr: 1.5 }}
                   />
                 </InputAdornment>
               ),
