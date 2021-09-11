@@ -296,7 +296,7 @@ export default function PopupContents<T>({
                 <InputAdornment position="start">
                   <SearchBoxIcon
                     color="action"
-                    sx={{ pointerEvents: 'none', mr: 1.5 }}
+                    sx={{ pointerEvents: 'none', mr: 0.5 }}
                   />
                 </InputAdornment>
               ),
