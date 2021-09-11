@@ -119,6 +119,17 @@ export default function PopupFooter({
         alignItems="center"
       >
         <Grid item>{clearButton}</Grid>
+
+        <Grid item>
+          <Button
+            onClick={onClose}
+            className={classes.button}
+            variant="text"
+            color="primary"
+          >
+            Done
+          </Button>
+        </Grid>
       </Grid>
     );
 
