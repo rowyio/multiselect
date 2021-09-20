@@ -26,7 +26,9 @@ const Transition = React.forwardRef(function Transition(
 
 const useStyles = makeStyles((theme) =>
   createStyles({
-    root: { margin: theme.spacing(0.75) },
+    root: {
+      margin: theme.spacing(1, 0.75, 0),
+    },
 
     startIcon: {
       marginLeft: theme.spacing(-0.25),
