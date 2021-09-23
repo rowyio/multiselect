@@ -175,7 +175,7 @@ export default function PopupContents<T>({
     if (multiple) searchBoxLabel = `Select ${labelPlural || label}`;
     else searchBoxLabel = `Select a ${label}`;
   }
-  let SearchBoxicon = SearchIcon;
+  let SearchBoxIcon = SearchIcon;
 
   const handleChange = (
     _: any,
