@@ -3,6 +3,7 @@ import clsx from 'clsx';
 
 import { makeStyles, createStyles } from '@mui/styles';
 import {
+  useThemeProps,
   TextField,
   InputAdornment,
   Autocomplete,
@@ -152,6 +153,11 @@ export default function PopupContents<T>({
   AddDialogProps,
 }: PopupContentsProps<T>) {
   const classes = useStyles();
+  const themeCheckboxProps: any = useThemeProps({
+    props: {},
+    name: 'MuiCheckbox',
+  });
+  const themeRadioProps: any = useThemeProps({ props: {}, name: 'MuiRadio' });
 
   const [selectedValues, setSelectedValues] = useState(
     Array.isArray(value)
@@ -191,14 +197,31 @@ export default function PopupContents<T>({
         noOptionsText={`No ${labelPlural || label || 'options'}`}
         renderOption={(props, option, { selected }) => {
           let Icon: typeof CheckSelectedIcon =
-            itemIcons?.multiple ?? CheckUnselectedIcon;
+            itemIcons?.multiple ??
+            themeCheckboxProps.icon ??
+            CheckUnselectedIcon;
           if (multiple) {
             if (selected)
-              Icon = itemIcons?.multipleSelected ?? CheckSelectedIcon;
-            else Icon = itemIcons?.multiple ?? CheckUnselectedIcon;
+              Icon =
+                itemIcons?.multipleSelected ??
+                themeCheckboxProps.checkedIcon ??
+                CheckSelectedIcon;
+            else
+              Icon =
+                itemIcons?.multiple ??
+                themeCheckboxProps.icon ??
+                CheckUnselectedIcon;
           } else {
-            if (selected) Icon = itemIcons?.singleSelected ?? RadioSelectedIcon;
-            else Icon = itemIcons?.single ?? RadioUnselectedIcon;
+            if (selected)
+              Icon =
+                itemIcons?.singleSelected ??
+                themeRadioProps.checkedIcon ??
+                RadioSelectedIcon;
+            else
+              Icon =
+                itemIcons?.single ??
+                themeRadioProps.icon ??
+                RadioUnselectedIcon;
           }
 
           return (
