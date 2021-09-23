@@ -85,6 +85,7 @@ export default function AddItem({
         onClick={() => setOpen(true)}
         disabled={disabled}
         {...AddButtonProps}
+        sx={{ '&:last-child': { mb: 1 }, ...AddButtonProps?.sx }}
       >
         {'\u200b'}
         {AddButtonProps?.children || 'Add New'}
