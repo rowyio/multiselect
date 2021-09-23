@@ -6,7 +6,6 @@ import {
 } from '@mui/material';
 import { Option } from './Option';
 import { AddItemProps } from './AddItem';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
 export type PopupContentsCommonProps<T> = {
   onClose: () => void;
@@ -49,7 +48,7 @@ export type PopupContentsCommonProps<T> = {
   itemIcons?: Partial<
     Record<
       'single' | 'singleSelected' | 'multiple' | 'multipleSelected',
-      typeof CheckBoxIcon
+      React.ReactNode
     >
   >;
   /**

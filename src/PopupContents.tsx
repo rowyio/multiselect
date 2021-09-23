@@ -175,7 +175,7 @@ export default function PopupContents<T>({
     if (multiple) searchBoxLabel = `Select ${labelPlural || label}`;
     else searchBoxLabel = `Select a ${label}`;
   }
-  let SearchBoxIcon = SearchIcon;
+  let SearchBoxicon = SearchIcon;
 
   const handleChange = (
     _: any,
@@ -196,37 +196,29 @@ export default function PopupContents<T>({
       <Autocomplete
         noOptionsText={`No ${labelPlural || label || 'options'}`}
         renderOption={(props, option, { selected }) => {
-          let Icon: typeof CheckSelectedIcon =
-            itemIcons?.multiple ??
-            themeCheckboxProps.icon ??
-            CheckUnselectedIcon;
+          let icon: React.ReactNode = itemIcons?.multiple ??
+            themeCheckboxProps.icon ?? <CheckUnselectedIcon />;
           if (multiple) {
             if (selected)
-              Icon =
-                itemIcons?.multipleSelected ??
-                themeCheckboxProps.checkedIcon ??
-                CheckSelectedIcon;
+              icon = itemIcons?.multipleSelected ??
+                themeCheckboxProps.checkedIcon ?? <CheckSelectedIcon />;
             else
-              Icon =
-                itemIcons?.multiple ??
-                themeCheckboxProps.icon ??
-                CheckUnselectedIcon;
+              icon = itemIcons?.multiple ?? themeCheckboxProps.icon ?? (
+                <CheckUnselectedIcon />
+              );
           } else {
             if (selected)
-              Icon =
-                itemIcons?.singleSelected ??
-                themeRadioProps.checkedIcon ??
-                RadioSelectedIcon;
+              icon = itemIcons?.singleSelected ??
+                themeRadioProps.checkedIcon ?? <RadioSelectedIcon />;
             else
-              Icon =
-                itemIcons?.single ??
-                themeRadioProps.icon ??
-                RadioUnselectedIcon;
+              icon = itemIcons?.single ?? themeRadioProps.icon ?? (
+                <RadioUnselectedIcon />
+              );
           }
 
           return (
             <li {...props}>
-              <Icon className={classes.optionIcon} />
+              <div className={classes.optionIcon}>{icon}</div>
               {itemRenderer ? itemRenderer(option, selected) : option.label}
             </li>
           );
