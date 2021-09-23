@@ -6,6 +6,7 @@ import {
 } from '@mui/material';
 import { Option } from './Option';
 import { AddItemProps } from './AddItem';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
 export type PopupContentsCommonProps<T> = {
   onClose: () => void;
@@ -42,6 +43,15 @@ export type PopupContentsCommonProps<T> = {
    * [Autocomplete’s `renderOption` prop](https://material-ui.com/api/autocomplete/)
    */
   itemRenderer?: (option: Option<T>, selected: boolean) => React.ReactNode;
+  /**
+   * Optionally override the checkbox and radio icons.
+   */
+  itemIcons?: Partial<
+    Record<
+      'single' | 'singleSelected' | 'multiple' | 'multipleSelected',
+      typeof CheckBoxIcon
+    >
+  >;
   /**
    * Override certain props of the search box MUI TextField component.
    * [See props here](https://material-ui.com/api/text-field/)

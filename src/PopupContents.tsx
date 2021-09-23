@@ -10,10 +10,10 @@ import {
 } from '@mui/material';
 
 import SearchIcon from '@mui/icons-material/Search';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import CheckUnselectedIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckSelectedIcon from '@mui/icons-material/CheckBox';
+import RadioUnselectedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import RadioSelectedIcon from '@mui/icons-material/RadioButtonChecked';
 
 import FragmentWrapper from './FragmentWrapper';
 import AddItem from './AddItem';
@@ -145,6 +145,7 @@ export default function PopupContents<T>({
   countText,
 
   itemRenderer,
+  itemIcons,
   SearchBoxProps,
   AutocompleteProps,
   AddButtonProps,
@@ -189,13 +190,15 @@ export default function PopupContents<T>({
       <Autocomplete
         noOptionsText={`No ${labelPlural || label || 'options'}`}
         renderOption={(props, option, { selected }) => {
-          let Icon: typeof CheckBoxIcon = CheckBoxOutlineBlankIcon;
+          let Icon: typeof CheckSelectedIcon =
+            itemIcons?.multiple ?? CheckUnselectedIcon;
           if (multiple) {
-            if (selected) Icon = CheckBoxIcon;
-            else Icon = CheckBoxOutlineBlankIcon;
+            if (selected)
+              Icon = itemIcons?.multipleSelected ?? CheckSelectedIcon;
+            else Icon = itemIcons?.multiple ?? CheckUnselectedIcon;
           } else {
-            if (selected) Icon = RadioButtonCheckedIcon;
-            else Icon = RadioButtonUncheckedIcon;
+            if (selected) Icon = itemIcons?.singleSelected ?? RadioSelectedIcon;
+            else Icon = itemIcons?.single ?? RadioUnselectedIcon;
           }
 
           return (
