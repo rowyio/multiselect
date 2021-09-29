@@ -88,7 +88,7 @@ export default function AddItem({
         sx={{ '&:last-child': { mb: 1 }, ...AddButtonProps?.sx }}
       >
         {'\u200b'}
-        {AddButtonProps?.children || 'Add New'}
+        {AddButtonProps?.children || 'Add new'}
       </Button>
 
       <Dialog
@@ -100,12 +100,12 @@ export default function AddItem({
         maxWidth="xs"
       >
         <DialogTitle id="form-dialog-title">
-          {AddDialogProps?.title || 'Add Item to List'}
+          {AddDialogProps?.title || 'Add item to list'}
         </DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
-            label={AddDialogProps?.textFieldLabel || 'New Item'}
+            label={AddDialogProps?.textFieldLabel || 'New item'}
             variant="filled"
             fullWidth
             value={toAdd}

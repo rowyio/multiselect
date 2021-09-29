@@ -84,7 +84,7 @@ export default function PopupFooter({
                 color="primary"
                 disabled={value.length > 0}
               >
-                Select All
+                Select all
               </Button>
             )}
           </Grid>
