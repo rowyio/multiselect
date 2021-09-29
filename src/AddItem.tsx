@@ -52,14 +52,10 @@ export default function AddItem({
   const classes = useStyles();
 
   const themeProps: any = useThemeProps({ props: {}, name: 'RowyMultiSelect' });
-  const addSingleIcon =
-    AddButtonProps?.singleIcon ||
-    themeProps.AddButtonProps?.singleIcon ||
-    AddCircleIcon;
-  const addMultipleIcon =
-    AddButtonProps?.multipleIcon ||
-    themeProps.AddButtonProps?.multipleIcon ||
-    AddBoxIcon;
+  const addSingleIcon = AddButtonProps?.singleIcon ??
+    themeProps.AddButtonProps?.singleIcon ?? <AddCircleIcon />;
+  const addMultipleIcon = AddButtonProps?.multipleIcon ??
+    themeProps.AddButtonProps?.multipleIcon ?? <AddBoxIcon />;
 
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
