@@ -6,7 +6,10 @@ export type AddItemProps = {
   value: PopupContentsProps<string>['value'];
   onChange: PopupContentsProps<string>['onChange'];
   disabled?: boolean;
-  AddButtonProps?: Partial<ButtonProps>;
+  AddButtonProps?: Partial<ButtonProps> & {
+    singleIcon?: React.ReactNode;
+    multipleIcon?: React.ReactNode;
+  };
   AddDialogProps?: {
     title?: React.ReactNode;
     textFieldLabel?: React.ReactNode;

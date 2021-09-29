@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { makeStyles, createStyles } from '@mui/styles';
 import {
+  useThemeProps,
   Button,
   Dialog,
   Grow,
@@ -50,6 +51,16 @@ export default function AddItem({
 }: AddItemProps) {
   const classes = useStyles();
 
+  const themeProps: any = useThemeProps({ props: {}, name: 'RowyMultiSelect' });
+  const addSingleIcon =
+    AddButtonProps?.singleIcon ||
+    themeProps.AddButtonProps?.singleIcon ||
+    AddCircleIcon;
+  const addMultipleIcon =
+    AddButtonProps?.multipleIcon ||
+    themeProps.AddButtonProps?.multipleIcon ||
+    AddBoxIcon;
+
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
 
@@ -78,7 +89,7 @@ export default function AddItem({
   return (
     <>
       <Button
-        startIcon={multiple ? <AddBoxIcon /> : <AddCircleIcon />}
+        startIcon={multiple ? addMultipleIcon : addSingleIcon}
         color="secondary"
         variant="text"
         classes={classes}
