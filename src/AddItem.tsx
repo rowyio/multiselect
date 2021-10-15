@@ -95,7 +95,7 @@ export default function AddItem({
         sx={{ '&:last-child': { mb: 1 }, ...AddButtonProps?.sx }}
       >
         {'\u200b'}
-        {AddButtonProps?.children || 'Add new'}
+        {AddButtonProps?.children || 'Add new…'}
       </Button>
 
       <Dialog
