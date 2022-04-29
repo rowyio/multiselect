@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { makeStyles, createStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import {
   useThemeProps,
   Button,
@@ -25,21 +25,19 @@ const Transition = React.forwardRef(function Transition(
   return <Grow ref={ref} {...props} />;
 });
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    root: {
-      margin: theme.spacing(1, 0.75, 0),
-    },
+const useStyles = makeStyles()((theme) => ({
+  root: {
+    margin: theme.spacing(1, 0.75, 0),
+  },
 
-    startIcon: {
-      marginLeft: theme.spacing(-0.25),
-      marginRight: theme.spacing(2),
-    },
-    iconSizeMedium: {
-      '& > *:first-child': { fontSize: 24 },
-    },
-  })
-);
+  startIcon: {
+    marginLeft: theme.spacing(-0.25),
+    marginRight: theme.spacing(2),
+  },
+  iconSizeMedium: {
+    '& > *:first-child': { fontSize: 24 },
+  },
+}));
 
 export default function AddItem({
   multiple,
@@ -49,7 +47,7 @@ export default function AddItem({
   AddDialogProps,
   disabled = false,
 }: AddItemProps) {
-  const classes = useStyles();
+  const { classes } = useStyles();
 
   const themeProps: any = useThemeProps({ props: {}, name: 'RowyMultiSelect' });
   const addSingleIcon = AddButtonProps?.singleIcon ??

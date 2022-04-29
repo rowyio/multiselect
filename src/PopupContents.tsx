@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import clsx from 'clsx';
 
-import { makeStyles, createStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import {
   useThemeProps,
   TextField,
@@ -28,101 +27,99 @@ import {
   FOOTER_HEIGHT,
 } from './constants/layout';
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    root: {
-      '&$hideSearch': { marginTop: -SEARCH_AREA_HEIGHT },
-    },
-    hideSearch: {},
-    noFooter: {},
-    freeText: {},
+const useStyles = makeStyles()((theme) => ({
+  root: {
+    '&$hideSearch': { marginTop: -SEARCH_AREA_HEIGHT },
+  },
+  hideSearch: {},
+  noFooter: {},
+  freeText: {},
 
-    popper: {
-      minWidth: LISTBOX_MIN_WIDTH,
-      width: '100% !important',
-    },
-    popperDisablePortal: { position: 'relative' },
+  popper: {
+    minWidth: LISTBOX_MIN_WIDTH,
+    width: '100% !important',
+  },
+  popperDisablePortal: { position: 'relative' },
 
-    search: {
-      padding: theme.spacing(1, 1, 0),
-    },
-    searchInput: {
-      borderRadius: theme.shape.borderRadius,
-      padding: theme.spacing(0.75, 0.5) + ' !important',
-      height: 32,
-      ...theme.typography.body2,
-    },
+  search: {
+    padding: theme.spacing(1, 1, 0),
+  },
+  searchInput: {
+    borderRadius: theme.shape.borderRadius,
+    padding: theme.spacing(0.75, 0.5) + ' !important',
+    height: 32,
+    ...(theme.typography.body2 as any),
+  },
 
-    listbox: {
-      padding: theme.spacing(1, 0),
-      borderBottom: `1px solid ${theme.palette.divider}`,
+  listbox: {
+    padding: theme.spacing(1, 0),
+    borderBottom: `1px solid ${theme.palette.divider}`,
 
-      boxSizing: 'border-box',
-      minHeight: LISTBOX_MIN_HEIGHT,
-      maxHeight: `calc(100vh - 96px - ${SEARCH_AREA_HEIGHT}px - ${FOOTER_HEIGHT}px)`,
+    boxSizing: 'border-box',
+    minHeight: LISTBOX_MIN_HEIGHT,
+    maxHeight: `calc(100vh - 96px - ${SEARCH_AREA_HEIGHT}px - ${FOOTER_HEIGHT}px)`,
 
-      '&$freeText': {
-        maxHeight: `calc(100vh - 96px - ${SEARCH_AREA_HEIGHT}px - ${
-          FOOTER_HEIGHT * 2
-        }px)`,
-      },
-
-      '&$hideSearch': { minHeight: LISTBOX_MIN_HEIGHT + SEARCH_AREA_HEIGHT },
-      '&$noFooter': { minHeight: LISTBOX_MIN_HEIGHT + FOOTER_HEIGHT },
-      '&$hideSearch$noFooter': {
-        minHeight: LISTBOX_MIN_HEIGHT + SEARCH_AREA_HEIGHT + FOOTER_HEIGHT,
-      },
-    },
-    noOptions: {
-      ...theme.typography.button,
-      color: theme.palette.text.secondary,
-      userSelect: 'none',
-
-      height: LISTBOX_MIN_HEIGHT,
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
+    '&$freeText': {
+      maxHeight: `calc(100vh - 96px - ${SEARCH_AREA_HEIGHT}px - ${
+        FOOTER_HEIGHT * 2
+      }px)`,
     },
 
-    groupLabel: { top: theme.spacing(-2) },
-
-    option: {
-      ...theme.typography.body2,
-
-      // Prevent grouping increasing left padding
-      '&&': { paddingLeft: theme.spacing(2) },
-
-      position: 'relative',
-      marginBottom: 1,
-
-      // Bottom divider
-      '&::after': {
-        content: '""',
-        display: 'block',
-
-        position: 'absolute',
-        bottom: -1,
-        left: theme.spacing(52 / 8),
-        right: theme.spacing(2),
-
-        backgroundColor: theme.palette.divider,
-        height: 1,
-      },
-      '&:last-child::after': { content: 'none' },
-
-      // Don’t highlight selected items to prevent confusion on what is focused
-      '&[aria-selected="true"]': { backgroundColor: 'transparent' },
-      // Undo this override when the item is focused
-      '&[aria-selected="true"].Mui-focused': {
-        backgroundColor: theme.palette.action.hover,
-      },
-
-      // Disable dense sizes
-      [theme.breakpoints.up('sm')]: { minHeight: 48 },
+    '&$hideSearch': { minHeight: LISTBOX_MIN_HEIGHT + SEARCH_AREA_HEIGHT },
+    '&$noFooter': { minHeight: LISTBOX_MIN_HEIGHT + FOOTER_HEIGHT },
+    '&$hideSearch$noFooter': {
+      minHeight: LISTBOX_MIN_HEIGHT + SEARCH_AREA_HEIGHT + FOOTER_HEIGHT,
     },
-    optionIcon: { margin: theme.spacing(0, 2, 0, -0.5) },
-  })
-);
+  },
+  noOptions: {
+    ...(theme.typography.button as any),
+    color: theme.palette.text.secondary,
+    userSelect: 'none',
+
+    height: LISTBOX_MIN_HEIGHT,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  groupLabel: { top: theme.spacing(-2) },
+
+  option: {
+    ...(theme.typography.body2 as any),
+
+    // Prevent grouping increasing left padding
+    '&&': { paddingLeft: theme.spacing(2) },
+
+    position: 'relative',
+    marginBottom: 1,
+
+    // Bottom divider
+    '&::after': {
+      content: '""',
+      display: 'block',
+
+      position: 'absolute',
+      bottom: -1,
+      left: theme.spacing(52 / 8),
+      right: theme.spacing(2),
+
+      backgroundColor: theme.palette.divider,
+      height: 1,
+    },
+    '&:last-child::after': { content: 'none' },
+
+    // Don’t highlight selected items to prevent confusion on what is focused
+    '&[aria-selected="true"]': { backgroundColor: 'transparent' },
+    // Undo this override when the item is focused
+    '&[aria-selected="true"].Mui-focused': {
+      backgroundColor: theme.palette.action.hover,
+    },
+
+    // Disable dense sizes
+    [theme.breakpoints.up('sm')]: { minHeight: 48 },
+  },
+  optionIcon: { margin: theme.spacing(0, 2, 0, -0.5) },
+}));
 
 // TODO: Rewrite with useAutocomplete instead
 export default function PopupContents<T>({
@@ -152,7 +149,7 @@ export default function PopupContents<T>({
   AddButtonProps,
   AddDialogProps,
 }: PopupContentsProps<T>) {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
   const themeCheckboxProps: any = useThemeProps({
     props: {},
     name: 'MuiCheckbox',
@@ -256,10 +253,10 @@ export default function PopupContents<T>({
         // onClose={onClose}
         // disableCloseOnSelect={!multiple}
         classes={{
-          root: clsx(classes.root, !searchable && classes.hideSearch),
+          root: cx(classes.root, !searchable && classes.hideSearch),
           popper: classes.popper,
           popperDisablePortal: classes.popperDisablePortal,
-          listbox: clsx(
+          listbox: cx(
             classes.listbox,
             !searchable && classes.hideSearch,
             !multiple && !clearable && classes.noFooter,

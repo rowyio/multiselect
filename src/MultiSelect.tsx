@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import clsx from 'clsx';
 
-import { makeStyles, createStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 import { TextField, AutocompleteChangeReason } from '@mui/material';
 
 import PopupContents from './PopupContents';
@@ -14,20 +13,18 @@ import {
   FOOTER_HEIGHT,
 } from './constants/layout';
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    paper: {
-      minHeight: SEARCH_AREA_HEIGHT + LISTBOX_MIN_HEIGHT + FOOTER_HEIGHT,
+const useStyles = makeStyles()(() => ({
+  paper: {
+    minHeight: SEARCH_AREA_HEIGHT + LISTBOX_MIN_HEIGHT + FOOTER_HEIGHT,
 
-      '&$hideSearch': { minHeight: LISTBOX_MIN_HEIGHT + FOOTER_HEIGHT },
-      '&$noFooter': { minHeight: SEARCH_AREA_HEIGHT + LISTBOX_MIN_HEIGHT },
-      '&$hideSearch$noFooter': { minHeight: LISTBOX_MIN_HEIGHT },
-    },
+    '&$hideSearch': { minHeight: LISTBOX_MIN_HEIGHT + FOOTER_HEIGHT },
+    '&$noFooter': { minHeight: SEARCH_AREA_HEIGHT + LISTBOX_MIN_HEIGHT },
+    '&$hideSearch$noFooter': { minHeight: LISTBOX_MIN_HEIGHT },
+  },
 
-    hideSearch: {},
-    noFooter: {},
-  })
-);
+  hideSearch: {},
+  noFooter: {},
+}));
 
 /**
  * A component to select multiple items from a list of options using the
@@ -81,7 +78,7 @@ export default function MultiSelect<T = string>({
   TextFieldProps = {},
   ...props
 }: MultiSelectProps<T>) {
-  const classes = useStyles();
+  const { classes, cx } = useStyles();
 
   // Must control popup open state here to programmatically close it
   const [open, setOpen] = useState(false);
@@ -217,7 +214,7 @@ export default function MultiSelect<T = string>({
         ...TextFieldProps.SelectProps,
         MenuProps: {
           classes: {
-            paper: clsx(
+            paper: cx(
               classes.paper,
               !searchable && classes.hideSearch,
               !multiple && !clearable && classes.noFooter,
