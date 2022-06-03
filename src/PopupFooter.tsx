@@ -38,6 +38,9 @@ export default function PopupFooter({
   value,
   options,
   max,
+  clearText,
+  selectAllText,
+  doneText,
 }: PopupFooterProps) {
   const { classes } = useStyles();
 
@@ -49,7 +52,7 @@ export default function PopupFooter({
       color="primary"
       disabled={!value || value?.length === 0}
     >
-      Clear
+      {clearText}
     </Button>
   );
 
@@ -82,7 +85,7 @@ export default function PopupFooter({
                 color="primary"
                 disabled={value.length > 0}
               >
-                Select all
+                {selectAllText}
               </Button>
             )}
           </Grid>
@@ -101,7 +104,7 @@ export default function PopupFooter({
             variant="text"
             color="primary"
           >
-            Done
+            {doneText}
           </Button>
         </Grid>
       </Grid>
@@ -125,7 +128,7 @@ export default function PopupFooter({
             variant="text"
             color="primary"
           >
-            Done
+            {doneText}
           </Button>
         </Grid>
       </Grid>

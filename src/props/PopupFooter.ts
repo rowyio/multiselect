@@ -9,4 +9,7 @@ export type PopupFooterProps = {
   value: any;
   options: any[];
   max?: number;
+  clearText?: string;
+  selectAllText?: string;
+  doneText?: string;
 };

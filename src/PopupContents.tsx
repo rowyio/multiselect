@@ -141,6 +141,9 @@ export default function PopupContents<T>({
   clearable = true,
   freeText = false,
   countText,
+  clearText = 'Clear',
+  selectAllText = 'Select all',
+  doneText = 'Done',
 
   itemRenderer,
   itemIcons,
@@ -349,6 +352,9 @@ export default function PopupContents<T>({
         onClear={onClear}
         onClose={onClose}
         countText={countText}
+        clearText={clearText}
+        selectAllText={selectAllText}
+        doneText={doneText}
         value={value}
         options={options}
         max={max}

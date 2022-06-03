@@ -33,6 +33,12 @@ export type PopupContentsCommonProps<T> = {
   freeText?: boolean;
   /** Optionally override the text shown in the count on the left of the footer */
   countText?: React.ReactNode;
+  /** Optionally override the text for the Clear button */
+  clearText?: string;
+  /** Optionally override the text for the Select All button */
+  selectAllText?: string;
+  /** Optionally override the text for the Done button */
+  doneText?: string;
 
   /**
    * Optionally override how each option is rendered, while still showing the
