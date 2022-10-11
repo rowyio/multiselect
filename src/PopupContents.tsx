@@ -282,6 +282,7 @@ export default function PopupContents<T>({
           <TextField
             {...params}
             autoFocus={window.matchMedia('screen and (pointer: fine)').matches}
+            onFocus={(e) => e.target.select()}
             onKeyDown={(e) => {
               // Escape key: close popup. Must be handled here since we cannot
               // pass the `onClose` prop to the root Autocomplete component.
