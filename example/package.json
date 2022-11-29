@@ -10,7 +10,7 @@
   "dependencies": {
     "@material-ui/core": "^4.12.3",
     "elliptic": "^6.5.4",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "react": "^16.8.0 || ^17.0.0",
     "react-app-polyfill": "^1.0.0",
     "react-dom": "^16.8.0 || ^17.0.0"
